@@ -120,6 +120,40 @@ footer{background:var(--card);border-top:1px solid var(--border);text-align:cent
   <div id="view-companies" style="display:none"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
 </div>
 
+<!-- LISTING MODAL (কোম্পানির জন্য) -->
+<div class="modal-bg" id="listing-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('listing-modal')">✕</button>
+    <h2>🏡 জমি লিস্ট করুন</h2>
+    <p class="sub">আপনার কোম্পানির নামে জমি পোস্ট করুন</p>
+    <div class="form-group"><label>জেলা</label><select id="lm-district"></select></div>
+    <div class="form-group"><label>এলাকা</label><input id="lm-area" type="text" placeholder="থানা / এলাকা"></div>
+    <div class="form-group"><label>জমির ধরন</label>
+      <select id="lm-type"><option>আবাসিক</option><option>বাণিজ্যিক</option><option>কৃষি জমি</option><option>ফ্ল্যাট</option><option>প্লট</option></select>
+    </div>
+    <div class="form-group"><label>পরিমাণ</label><input id="lm-size" type="text" placeholder="৫ কাঠা / ১০ শতক"></div>
+    <div class="form-group"><label>দাম (লক্ষ টাকায়)</label><input id="lm-price" type="text" placeholder="যেমন: ৫০"></div>
+    <div class="form-group"><label>বিবরণ</label><textarea id="lm-desc" placeholder="জমির বিস্তারিত তথ্য..."></textarea></div>
+    <div class="form-group">
+      <label>📸 ছবি আপলোড (সর্বোচ্চ ৫টি)</label>
+      <div onclick="document.getElementById('lm-imgs').click()" style="border:2px dashed var(--green);border-radius:10px;padding:18px;text-align:center;cursor:pointer;background:#0f1f14">
+        <div style="font-size:28px">📷</div>
+        <div id="lm-upload-txt" style="font-size:13px;color:var(--green);font-weight:600;margin-top:5px">ছবি বেছে নিতে ক্লিক করুন</div>
+        <div style="font-size:11px;color:#475569;margin-top:3px">JPG, PNG — প্রতিটি সর্বোচ্চ 5MB</div>
+      </div>
+      <input id="lm-imgs" type="file" accept="image/*" multiple style="display:none" onchange="previewLmImages(event)">
+      <div id="lm-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+    </div>
+    <div class="form-group"><label>WhatsApp নম্বর (ঐচ্ছিক)</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="background:#25D366;color:#fff;padding:9px 12px;border-radius:8px">💬</span>
+        <input id="lm-wa" type="tel" placeholder="+8801XXXXXXXXX">
+      </div>
+    </div>
+    <button class="submit-btn" onclick="doSubmitListing()" id="lm-btn">✅ জমি প্রকাশ করুন</button>
+  </div>
+</div>
+
 <!-- LOGIN -->
 <div class="modal-bg" id="login-modal">
   <div class="modal">
@@ -248,6 +282,7 @@ function updateNav() {
     nr.innerHTML=`
       <span class="user-badge">${icon} ${session.name}</span>
       ${session.type==='buyer'?`<button class="btn btn-green" onclick="openPostModal()">+ চাহিদা</button>`:''}
+      ${session.type==='company'?`<button class="btn btn-green" onclick="openModal('listing-modal')">+ জমি লিস্ট করুন</button>`:''}
       <button class="btn btn-red" onclick="doLogout()">Logout</button>`;
   } else {
     nr.innerHTML=`
@@ -376,6 +411,76 @@ async function doPostRequest() {
     loadAll();
   } catch(e){ toast('সমস্যা হয়েছে','error'); }
   btn.disabled=false; btn.textContent='✅ চাহিদা পোস্ট করুন';
+}
+
+// ── LISTING SUBMIT (কোম্পানি) ─────────────────────────────────────────────────
+let lmFiles = [];
+function previewLmImages(e) {
+  const files = Array.from(e.target.files).slice(0,5);
+  lmFiles = files;
+  const prev = document.getElementById('lm-preview');
+  prev.innerHTML = '';
+  files.forEach((f,i) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;width:70px;height:70px';
+      const img = document.createElement('img');
+      img.src = ev.target.result;
+      img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--green)';
+      const del = document.createElement('button');
+      del.textContent = '✕';
+      del.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#dc2626;color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;font-weight:bold';
+      del.onclick = () => { wrap.remove(); lmFiles.splice(i,1); };
+      wrap.appendChild(img); wrap.appendChild(del);
+      prev.appendChild(wrap);
+    };
+    reader.readAsDataURL(f);
+  });
+  document.getElementById('lm-upload-txt').textContent = `✅ ${files.length}টি ছবি নির্বাচিত`;
+}
+
+async function doSubmitListing() {
+  if(!session||session.type!=='company'){toast('কোম্পানি হিসেবে লগইন করুন','error');return;}
+  const district = document.getElementById('lm-district').value;
+  const area = document.getElementById('lm-area').value.trim();
+  const price = document.getElementById('lm-price').value.trim();
+  if(!district||!area||!price){toast('জেলা, এলাকা ও দাম দিন','error');return;}
+  const btn = document.getElementById('lm-btn');
+  btn.disabled=true; btn.textContent='⏳ আপলোড হচ্ছে...';
+  try {
+    // ছবি আপলোড
+    const imgUrls = [];
+    for(let i=0;i<lmFiles.length;i++){
+      const f = lmFiles[i];
+      const fname = `${Date.now()}_${i}_${f.name.replace(/[^a-z0-9.]/gi,'_')}`;
+      const url = await uploadImage(f, fname);
+      imgUrls.push(url);
+    }
+    await sb('listings',{method:'POST',body:JSON.stringify({
+      name: session.name,
+      phone: session.phone||'',
+      whatsapp: document.getElementById('lm-wa').value.trim(),
+      district,
+      area,
+      land_type: document.getElementById('lm-type').value,
+      size: document.getElementById('lm-size').value.trim(),
+      price,
+      description: document.getElementById('lm-desc').value.trim(),
+      images: imgUrls,
+      company_id: session.id,
+      company_name: session.name
+    })});
+    closeModal('listing-modal');
+    toast('✅ জমি প্রকাশিত হয়েছে!','success');
+    ['lm-area','lm-size','lm-price','lm-desc','lm-wa'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('lm-preview').innerHTML='';
+    document.getElementById('lm-upload-txt').textContent='ছবি বেছে নিতে ক্লিক করুন';
+    lmFiles=[];
+    showTab('listings');
+    loadAll();
+  } catch(e){ toast('সমস্যা হয়েছে: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='✅ জমি প্রকাশ করুন';
 }
 
 // ── DELETE OWN POST ───────────────────────────────────────────────────────────
@@ -519,6 +624,11 @@ function toast(msg,type='success'){
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 fillDistricts();
+// listing modal এর district ও fill করো
+setTimeout(()=>{
+  const el = document.getElementById('lm-district');
+  if(el) el.innerHTML = '<option value="">জেলা বেছে নিন</option>' + DISTRICTS.map(d=>`<option>${d}</option>`).join('');
+},100);
 updateNav();
 loadAll();
 </script>
