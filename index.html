@@ -2,162 +2,538 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BUYLAND26 - জমির বাজার</title>
 <style>
+:root{--green:#16a34a;--green2:#15803d;--red:#dc2626;--dark:#0f172a;--card:#1e293b;--border:#334155;--gray:#94a3b8;--yellow:#f59e0b;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#fff;padding-bottom:30px;}
-.navbar{background:#1e293b;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #16a34a;}
-.logo{font-size:22px;font-weight:900;color:#16a34a;}
-.nav-links{display:flex;gap:8px;flex-wrap:wrap;}
-.nav-links button{background:transparent;border:1px solid #334155;color:#cbd5e1;padding:6px 14px;border-radius:8px;cursor:pointer;}
-.user-info{display:flex;align-items:center;gap:10px;background:#0f172a;padding:4px 12px;border-radius:20px;}
-.logout-btn{background:#dc2626;border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;}
-.container{max-width:1200px;margin:0 auto;padding:15px;}
-.hero{background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:20px;padding:30px;text-align:center;margin-bottom:25px;}
-.hero h1{font-size:28px;}
-.hero h1 span{color:#16a34a;}
-.stats{display:flex;justify-content:center;gap:20px;margin:15px 0;flex-wrap:wrap;}
-.stat-box{background:#1e293b;padding:12px 20px;border-radius:12px;text-align:center;}
-.stat-box .num{font-size:26px;font-weight:bold;color:#16a34a;}
-.btn{padding:10px 20px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin:5px;}
-.btn-green{background:#16a34a;color:white;}
-.btn-blue{background:#3b82f6;color:white;}
-.btn-orange{background:#f59e0b;color:white;}
-.quick-post{background:#1e293b;border-radius:16px;padding:20px;margin-bottom:25px;}
-.quick-post input,.quick-post select,.quick-post textarea{width:100%;padding:10px;margin:6px 0;background:#0f172a;border:1px solid #334155;border-radius:8px;color:white;}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.section-title{font-size:22px;margin:25px 0 15px;border-bottom:2px solid #334155;padding-bottom:8px;}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:15px;}
-.card{background:#1e293b;border-radius:12px;padding:15px;border:1px solid #334155;}
-.card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.profile-pic{width:40px;height:40px;border-radius:50%;background:#0f172a;display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid #16a34a;}
-.user-name{font-weight:bold;}
-.role-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;margin-left:5px;}
-.role-buyer{background:#3b82f6;}
-.role-seller{background:#f59e0b;}
-.role-visitor{background:#64748b;}
-.price{font-size:18px;font-weight:bold;color:#fbbf24;margin:8px 0;}
-.action-buttons{display:flex;gap:8px;margin-top:10px;}
-.call-btn{background:#16a34a;color:white;padding:8px;border-radius:6px;text-align:center;text-decoration:none;flex:1;font-size:13px;}
-.whatsapp-btn{background:#25D366;color:white;padding:8px;border-radius:6px;text-align:center;text-decoration:none;flex:1;font-size:13px;}
-.login-prompt{background:#0f172a;padding:8px;border-radius:8px;margin-top:10px;text-align:center;font-size:13px;}
-.warning-text{font-size:11px;color:#f59e0b;margin-top:8px;text-align:center;}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2000;justify-content:center;align-items:center;}
-.modal-content{background:#1e293b;border-radius:20px;padding:25px;width:90%;max-width:450px;}
-.modal-content h2{color:#16a34a;margin-bottom:15px;text-align:center;}
-.modal-content input,.modal-content select{width:100%;padding:10px;margin:8px 0;background:#0f172a;border:1px solid #334155;border-radius:8px;color:white;}
-.modal-content button{width:100%;padding:10px;background:#16a34a;border:none;border-radius:8px;color:white;font-weight:bold;cursor:pointer;margin-top:12px;}
-.close-modal{float:right;font-size:24px;cursor:pointer;}
-.switch-role{text-align:center;margin-top:12px;font-size:12px;}
-.switch-role a{color:#16a34a;cursor:pointer;}
-@media (max-width:640px){.hero h1{font-size:22px;}.row{grid-template-columns:1fr;}}
+body{font-family:'Segoe UI',sans-serif;background:var(--dark);color:#fff;min-height:100vh;}
+
+/* NAV */
+nav{background:var(--card);border-bottom:2px solid var(--green);padding:0 16px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px #0005;}
+.logo{font-size:22px;font-weight:900;letter-spacing:2px;color:var(--green);}
+.logo span{color:#fff;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.btn{padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:var(--green2);}
+.btn-outline{background:transparent;border:2px solid var(--green);color:var(--green);}
+.btn-outline:hover{background:var(--green);color:#fff;}
+.btn-red{background:var(--red);color:#fff;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#14532d,#166534,#15803d);padding:50px 16px;text-align:center;}
+.hero-logo{font-size:42px;font-weight:900;letter-spacing:4px;color:var(--green);}
+.hero-logo span{color:#fff;}
+.hero h1{font-size:26px;font-weight:700;margin:10px 0;line-height:1.3;}
+.hero h1 em{color:#86efac;font-style:normal;}
+.hero p{color:#bbf7d0;font-size:15px;margin-bottom:28px;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.hero-btns .btn{padding:12px 24px;font-size:15px;}
+
+/* STATS */
+.stats{display:flex;justify-content:center;gap:24px;padding:22px 16px;background:var(--card);border-bottom:1px solid var(--border);}
+.stat{text-align:center;}
+.stat .num{font-size:26px;font-weight:800;color:var(--green);}
+.stat .lbl{font-size:11px;color:var(--gray);}
+
+/* TABS */
+.tabs-wrap{max-width:1100px;margin:28px auto 0;padding:0 16px;}
+.tabs{display:flex;gap:4px;background:var(--card);padding:5px;border-radius:12px;border:1px solid var(--border);margin-bottom:20px;width:fit-content;}
+.tab{padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray);transition:all .2s;}
+.tab.active{background:var(--green);color:#fff;}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;padding-bottom:30px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .2s;}
+.card:hover{border-color:var(--green);transform:translateY(-2px);}
+.card-img{height:150px;background:linear-gradient(135deg,#1e3a2f,#166534);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;}
+.card-img img{width:100%;height:150px;object-fit:cover;}
+.card-badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.badge-sale{background:var(--green);color:#fff;}
+.badge-req{background:var(--yellow);color:#000;}
+.badge-company{background:#3b82f6;color:#fff;}
+.card-body{padding:14px;}
+.card-title{font-size:15px;font-weight:700;margin-bottom:5px;}
+.card-meta{font-size:12px;color:var(--gray);margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap;}
+.card-price{font-size:17px;font-weight:800;color:var(--green);margin-bottom:8px;}
+.card-desc{font-size:12px;color:#64748b;margin-bottom:10px;}
+.card-footer{display:flex;gap:8px;}
+.card-footer .btn{flex:1;font-size:12px;padding:8px;}
+.locked{background:#1e3a2f;border:1px dashed var(--green);border-radius:8px;padding:10px;text-align:center;font-size:12px;color:var(--green);margin-bottom:8px;}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:#000a;z-index:200;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);border-radius:16px;padding:24px;max-width:440px;width:92%;max-height:90vh;overflow-y:auto;border:1px solid var(--border);}
+.modal h2{font-size:18px;font-weight:800;margin-bottom:5px;color:var(--green);}
+.modal .sub{font-size:13px;color:var(--gray);margin-bottom:16px;}
+.form-group{margin-bottom:12px;}
+.form-group label{font-size:12px;color:var(--gray);display:block;margin-bottom:4px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;background:var(--dark);border:2px solid var(--border);border-radius:8px;color:#fff;font-size:14px;outline:none;font-family:inherit;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green);}
+.form-group textarea{resize:vertical;min-height:70px;}
+.submit-btn{width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
+.submit-btn:hover{background:var(--green2);}
+.submit-btn:disabled{background:#334155;cursor:not-allowed;}
+.close-btn{float:right;background:none;border:none;color:var(--gray);font-size:22px;cursor:pointer;}
+.switch-link{text-align:center;margin-top:12px;font-size:13px;color:var(--gray);}
+.switch-link a{color:var(--green);cursor:pointer;text-decoration:none;font-weight:600;}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:50px;color:var(--gray);}
+.spin{width:28px;height:28px;border:3px solid var(--border);border-top:3px solid var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px;color:var(--gray);}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 18px;border-radius:10px;font-size:14px;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:var(--green);color:#fff;}
+.toast.error{background:var(--red);color:#fff;}
+.toast.info{background:#3b82f6;color:#fff;}
+
+/* USER BADGE */
+.user-badge{background:var(--dark);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:12px;color:var(--green);font-weight:600;}
+
+footer{background:var(--card);border-top:1px solid var(--border);text-align:center;padding:20px;color:#475569;font-size:13px;margin-top:20px;}
+
+@media(max-width:600px){
+  .hero-logo{font-size:30px;}
+  .hero h1{font-size:20px;}
+  .stats{gap:14px;}
+}
 </style>
 </head>
 <body>
-<div class="navbar">
-    <div class="logo">BUY<span>LAND</span>26</div>
-    <div class="nav-links">
-        <button onclick="showPage('home')">হোম</button>
-        <button onclick="showPage('buyers')">ক্রেতার চাহিদা</button>
-        <button onclick="showPage('sellers')">বিক্রেতার লিস্টিং</button>
-        <button id="myPostsBtn" style="display:none;" onclick="showPage('myposts')">আমার পোস্ট</button>
-        <button id="myListingsBtn" style="display:none;" onclick="showPage('mylistings')">আমার লিস্টিং</button>
-    </div>
-    <div id="userArea"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">BUY<span>LAND</span>26</div>
+  <div class="nav-right" id="nav-right">
+    <button class="btn btn-outline" onclick="openModal('login-modal')">লগইন</button>
+    <button class="btn btn-green" onclick="openModal('register-modal')">নিবন্ধন</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-logo">BUY<span>LAND</span>26</div>
+  <h1>সঠিক জমি, <em>সঠিক মানুষের কাছে</em></h1>
+  <p>দালাল ছাড়া, ঝামেলা ছাড়া — সরাসরি ক্রেতা-বিক্রেতা সংযোগ</p>
+  <div class="hero-btns">
+    <button class="btn btn-green" onclick="requireBuyerLogin()">📢 আমার চাহিদা জানাই</button>
+    <button class="btn btn-outline" style="color:#fff;border-color:#fff" onclick="openModal('company-register-modal')">🏢 কোম্পানি নিবন্ধন</button>
+  </div>
 </div>
 
-<div class="container">
-    <div id="homePage">
-        <div class="hero">
-            <h1>সঠিক জমি, <span>সঠিক মানুষের কাছে</span></h1>
-            <div class="stats">
-                <div class="stat-box"><div class="num" id="totalBuyer">0</div><div>ক্রেতার চাহিদা</div></div>
-                <div class="stat-box"><div class="num" id="totalSeller">0</div><div>বিক্রেতার লিস্টিং</div></div>
-            </div>
-            <button class="btn btn-green" onclick="openRoleModal()">📢 পোস্ট করুন</button>
-            <button class="btn btn-blue" onclick="openModal('registerModal')">🔐 ক্রেতা রেজিস্ট্রেশন</button>
-            <button class="btn btn-orange" onclick="openModal('companyLoginModal')">🏢 কোম্পানি লগইন</button>
-        </div>
-
-        <div class="quick-post">
-            <h3>⚡ দ্রুত পোস্ট করুন (লগইন ছাড়া)</h3>
-            <div class="row">
-                <input type="text" id="qName" placeholder="নাম">
-                <input type="tel" id="qPhone" placeholder="মোবাইল *">
-            </div>
-            <div class="row">
-                <input type="text" id="qDistrict" placeholder="জেলা *">
-                <input type="text" id="qArea" placeholder="এলাকা *">
-            </div>
-            <input type="text" id="qBudget" placeholder="বাজেট (লক্ষ) *">
-            <select id="qType">
-                <option value="buyer">🛒 ক্রেতা (জমি কিনতে চাই)</option>
-                <option value="seller">🏠 বিক্রেতা (জমি বিক্রি করতে চাই)</option>
-            </select>
-            <button onclick="quickPost()" style="background:#16a34a; width:100%; padding:10px;">পোস্ট করুন</button>
-            <div class="warning-text">⚠️ লগইন ছাড়া পোস্ট করলে নাম্বার সবার দেখাবে</div>
-        </div>
-
-        <h2 class="section-title">🔍 সর্বশেষ ক্রেতার চাহিদা</h2>
-        <div id="recentRequests" class="card-grid"></div>
-        <h2 class="section-title">🏠 সর্বশেষ বিক্রেতার লিস্টিং</h2>
-        <div id="recentListings" class="card-grid"></div>
-    </div>
-
-    <div id="buyersPage" style="display:none;"><h2>📋 সকল ক্রেতার চাহিদা</h2><div id="allRequests" class="card-grid"></div></div>
-    <div id="sellersPage" style="display:none;"><h2>🏠 সকল বিক্রেতার লিস্টিং</h2><div id="allListings" class="card-grid"></div></div>
-    <div id="mypostsPage" style="display:none;"><h2>📝 আমার চাহিদা</h2><div id="myPosts" class="card-grid"></div></div>
-    <div id="mylistingsPage" style="display:none;"><h2>🏢 আমার লিস্টিং</h2><div id="myListings" class="card-grid"></div></div>
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="num" id="s-listings">...</div><div class="lbl">জমির তালিকা</div></div>
+  <div class="stat"><div class="num" id="s-requests">...</div><div class="lbl">ক্রেতার চাহিদা</div></div>
+  <div class="stat"><div class="num" id="s-companies">...</div><div class="lbl">নিবন্ধিত কোম্পানি</div></div>
 </div>
-<div id="roleModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('roleModal')">&times;</span><h2>কে পোস্ট করতে চান?</h2><button onclick="closeModal('roleModal'); openPostModal('buyer')" style="background:#3b82f6;">🛒 ক্রেতা</button><button onclick="closeModal('roleModal'); openPostModal('seller')" style="background:#f59e0b; margin-top:10px;">🏠 বিক্রেতা</button></div></div>
-<div id="registerModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('registerModal')">&times;</span><h2>📝 ক্রেতা রেজিস্ট্রেশন</h2><input type="text" id="regName" placeholder="নাম"><input type="tel" id="regPhone" placeholder="মোবাইল"><input type="password" id="regPassword" placeholder="পাসওয়ার্ড"><select id="regDistrict"><option>ঢাকা</option><option>গাজীপুর</option><option>নারায়ণগঞ্জ</option></select><button onclick="registerBuyer()">নিবন্ধন</button><div class="switch-role">ইতিমধ্যে নিবন্ধিত? <a onclick="showLoginForm()">লগইন</a></div></div></div>
-<div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>🔐 লগইন</h2><input type="tel" id="loginPhone" placeholder="মোবাইল"><input type="password" id="loginPassword" placeholder="পাসওয়ার্ড"><button onclick="loginBuyer()">লগইন</button><div class="switch-role">নতুন? <a onclick="closeModal('loginModal'); openModal('registerModal');">নিবন্ধন</a></div></div></div>
-<div id="companyLoginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('companyLoginModal')">&times;</span><h2>🏢 কোম্পানি লগইন</h2><input type="text" id="compUsername" placeholder="ইউজারনেম"><input type="password" id="compPassword" placeholder="পাসওয়ার্ড"><button onclick="companyLogin()">লগইন</button><div class="switch-role">নতুন? <a onclick="showCompanyRegister()">নিবন্ধন</a></div></div></div>
-<div id="companyRegisterModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('companyRegisterModal')">&times;</span><h2>🏢 কোম্পানি নিবন্ধন</h2><input type="text" id="compRegName" placeholder="কোম্পানির নাম"><input type="email" id="compRegEmail" placeholder="ইমেইল"><input type="tel" id="compRegPhone" placeholder="ফোন"><input type="text" id="compRegUsername" placeholder="ইউজারনেম"><input type="password" id="compRegPassword" placeholder="পাসওয়ার্ড"><input type="text" id="compTradeLicense" placeholder="ট্রেড লাইসেন্স"><button onclick="registerCompany()">নিবন্ধন</button></div></div>
-<div id="postModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('postModal')">&times;</span><div id="postModalContent"></div></div></div>
+
+<!-- TABS & CONTENT -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" id="tab-listings" onclick="showTab('listings')">🏡 জমির তালিকা</div>
+    <div class="tab" id="tab-requests" onclick="showTab('requests')">🔍 ক্রেতার চাহিদা</div>
+    <div class="tab" id="tab-companies" onclick="showTab('companies')">🏢 কোম্পানি</div>
+  </div>
+
+  <div id="view-listings"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
+  <div id="view-requests" style="display:none"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
+  <div id="view-companies" style="display:none"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- LOGIN -->
+<div class="modal-bg" id="login-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('login-modal')">✕</button>
+    <h2>🔐 লগইন</h2>
+    <p class="sub">ক্রেতা বা কোম্পানি — যেকোনো account দিয়ে লগইন করুন</p>
+    <div class="form-group"><label>মোবাইল / Username</label><input id="l-user" type="text" placeholder="নম্বর বা username"></div>
+    <div class="form-group"><label>পাসওয়ার্ড</label><input id="l-pass" type="password" placeholder="পাসওয়ার্ড"></div>
+    <button class="submit-btn" onclick="doLogin()" id="login-btn">🔐 লগইন করুন</button>
+    <div class="switch-link">নতুন ক্রেতা? <a onclick="switchModal('login-modal','register-modal')">নিবন্ধন করুন</a></div>
+  </div>
+</div>
+
+<!-- BUYER REGISTER -->
+<div class="modal-bg" id="register-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('register-modal')">✕</button>
+    <h2>📝 ক্রেতা নিবন্ধন</h2>
+    <p class="sub">নিবন্ধন করুন — কোম্পানির সাথে সহজে যোগাযোগ করুন</p>
+    <div class="form-group"><label>আপনার নাম</label><input id="r-name" type="text" placeholder="পুরো নাম"></div>
+    <div class="form-group"><label>মোবাইল নম্বর</label><input id="r-phone" type="tel" placeholder="01XXXXXXXXX"></div>
+    <div class="form-group"><label>পাসওয়ার্ড</label><input id="r-pass" type="password" placeholder="পাসওয়ার্ড দিন"></div>
+    <div class="form-group"><label>জেলা</label>
+      <select id="r-district">
+        <option value="">জেলা বেছে নিন</option>
+        <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
+        <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
+        <option>ময়মনসিংহ</option><option>রংপুর</option><option>গাজীপুর</option>
+      </select>
+    </div>
+    <button class="submit-btn" onclick="doRegisterBuyer()" id="reg-btn">✅ নিবন্ধন করুন</button>
+    <div class="switch-link">আগে নিবন্ধিত? <a onclick="switchModal('register-modal','login-modal')">লগইন করুন</a></div>
+  </div>
+</div>
+
+<!-- COMPANY REGISTER -->
+<div class="modal-bg" id="company-register-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('company-register-modal')">✕</button>
+    <h2>🏢 কোম্পানি নিবন্ধন</h2>
+    <p class="sub">নিবন্ধনের পর আমাদের টিম যাচাই করবে — তারপর ক্রেতার তথ্য দেখতে পাবেন</p>
+    <div class="form-group"><label>কোম্পানির নাম</label><input id="c-name" type="text" placeholder="কোম্পানির নাম"></div>
+    <div class="form-group"><label>ফোন নম্বর</label><input id="c-phone" type="tel" placeholder="01XXXXXXXXX"></div>
+    <div class="form-group"><label>ইমেইল</label><input id="c-email" type="email" placeholder="email@example.com"></div>
+    <div class="form-group"><label>ঠিকানা</label><input id="c-address" type="text" placeholder="কোম্পানির ঠিকানা"></div>
+    <div class="form-group"><label>জেলা</label>
+      <select id="c-district">
+        <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
+        <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Username</label><input id="c-username" type="text" placeholder="login এর জন্য username"></div>
+    <div class="form-group"><label>পাসওয়ার্ড</label><input id="c-pass" type="password" placeholder="পাসওয়ার্ড"></div>
+    <button class="submit-btn" onclick="doRegisterCompany()" id="comp-reg-btn">✅ নিবন্ধন অনুরোধ পাঠান</button>
+  </div>
+</div>
+
+<!-- BUYER POST -->
+<div class="modal-bg" id="post-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('post-modal')">✕</button>
+    <h2>📢 আমার চাহিদা জানাই</h2>
+    <p class="sub" id="post-modal-sub">আপনার তথ্য শুধু verified কোম্পানি দেখতে পাবে</p>
+    <div class="form-group"><label>জেলা</label>
+      <select id="p-district">
+        <option value="">জেলা বেছে নিন</option>
+        <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
+        <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
+        <option>ময়মনসিংহ</option><option>রংপুর</option><option>গাজীপুর</option>
+      </select>
+    </div>
+    <div class="form-group"><label>এলাকা</label><input id="p-area" type="text" placeholder="থানা / এলাকা"></div>
+    <div class="form-group"><label>জমির ধরন</label>
+      <select id="p-type">
+        <option>আবাসিক</option><option>বাণিজ্যিক</option><option>কৃষি জমি</option><option>ফ্ল্যাট</option><option>প্লট</option>
+      </select>
+    </div>
+    <div class="form-group"><label>পরিমাণ</label><input id="p-size" type="text" placeholder="৫ কাঠা / ১০ শতক"></div>
+    <div class="form-group"><label>বাজেট</label><input id="p-budget" type="text" placeholder="লক্ষ টাকায়"></div>
+    <div class="form-group"><label>বিশেষ চাহিদা</label><textarea id="p-note" placeholder="রাস্তার পাশে হতে হবে..."></textarea></div>
+    <!-- Guest extra fields -->
+    <div id="guest-fields" style="display:none">
+      <div class="form-group"><label>আপনার নাম</label><input id="p-guest-name" type="text" placeholder="নাম লিখুন"></div>
+      <div class="form-group"><label>মোবাইল নম্বর</label><input id="p-guest-phone" type="tel" placeholder="01XXXXXXXXX"></div>
+    </div>
+    <button class="submit-btn" onclick="doPostRequest()" id="post-btn">✅ চাহিদা পোস্ট করুন</button>
+    <div id="guest-warning" style="display:none;background:#7f1d1d;border:1px solid #dc2626;border-radius:8px;padding:10px;margin-top:10px;font-size:12px;color:#fca5a5;text-align:center">
+      ⚠️ সতর্কবার্তা: রেজিস্ট্রেশন ছাড়া চাহিদা পোস্ট করলে আপনার ফোন নাম্বার সবার কাছে দৃশ্যমান হবে। প্রাইভেসির জন্য <a onclick="switchModal('post-modal','register-modal')" style="color:#f87171;cursor:pointer;font-weight:700">নিবন্ধন করুন।</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <p>© 2025 <strong style="color:var(--green)">BUYLAND26</strong> — বাংলাদেশের প্রথম প্রাইভেসি-সুরক্ষিত জমির প্ল্যাটফর্ম</p>
+</footer>
+
 <script>
-const SUP_URL='https://pbrnwbfftropifpnsqgp.supabase.co';
-const SUP_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicm53YmZmdHJvcGlmcG5zcWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NTY4NzIsImV4cCI6MjA5MTAzMjg3Mn0.58RaOoLFpfD6b0FeayHwG-XnF_qOvJDkkEGjoaGgbKw';
-let currentUser=JSON.parse(localStorage.getItem('buyland_user')||'null');
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const SUPA_URL = 'https://pbrnwbfftropifpnsqgp.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicm53YmZmdHJvcGlmcG5zcWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NTY4NzIsImV4cCI6MjA5MTAzMjg3Mn0.58RaOoLFpfD6b0FeayHwG-XnF_qOvJDkkEGjoaGgbKw';
+const SVC_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicm53YmZmdHJvcGlmcG5zcWdwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTQ1Njg3MiwiZXhwIjoyMDkxMDMyODcyfQ.KLjXm5oy9ftDrpxJhdqMzu7ixAFCxvD-tUcvjBHmyPo';
 
-async function fetchData(path){try{const r=await fetch(`${SUP_URL}/rest/v1/${path}`,{headers:{'apikey':SUP_KEY,'Authorization':`Bearer ${SUP_KEY}`}});return r.ok?await r.json():[];}catch(e){return[];}}
-async function postData(path,data){try{const r=await fetch(`${SUP_URL}/rest/v1/${path}`,{method:'POST',headers:{'apikey':SUP_KEY,'Authorization':`Bearer ${SUP_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(data)});return r.ok;}catch(e){return false;}}
-async function delData(path,id){try{const r=await fetch(`${SUP_URL}/rest/v1/${path}?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUP_KEY,'Authorization':`Bearer ${SUP_KEY}`}});return r.ok;}catch(e){return false;}}
-async function hashPass(p){const e=new TextEncoder();const d=e.encode(p);const h=await crypto.subtle.digest('SHA-256',d);return btoa(String.fromCharCode(...new Uint8Array(h)));}
-function fmtPhone(phone){let c=String(phone).replace(/[^0-9]/g,'');if(c.startsWith('0'))c='88'+c;return c;}
+// ── SUPABASE HELPERS ──────────────────────────────────────────────────────────
+async function sb(path, opts={}, useService=false) {
+  const key = useService ? SVC_KEY : ANON_KEY;
+  const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
+    headers:{'apikey':key,'Authorization':`Bearer ${key}`,'Content-Type':'application/json','Prefer':'return=representation',...(opts.headers||{})},
+    ...opts
+  });
+  if(res.status===204) return null;
+  return res.ok ? res.json() : null;
+}
 
-async function quickPost(){const type=document.getElementById('qType').value;if(type==='buyer'){const data={name:document.getElementById('qName').value||'অতিথি',phone:document.getElementById('qPhone').value,district:document.getElementById('qDistrict').value,area:document.getElementById('qArea').value,budget:document.getElementById('qBudget').value,user_type:'visitor',role:'buyer',status:'active'};if(!data.phone||!data.district||!data.area||!data.budget){alert('মোবাইল, জেলা, এলাকা ও বাজেট দিন');return;}
-const ok=await postData('buyer_requests',data);if(ok){alert('পোস্ট হয়েছে!');clearForm();loadAll();}else{alert('পোস্ট ব্যর্থ');}}else{const data={seller_name:document.getElementById('qName').value||'বিক্রেতা',seller_phone:document.getElementById('qPhone').value,district:document.getElementById('qDistrict').value,area:document.getElementById('qArea').value,price:document.getElementById('qBudget').value,size:'উল্লেখ নেই',user_type:'visitor',role:'seller',status:'active'};if(!data.seller_phone||!data.district||!data.area||!data.price){alert('মোবাইল, জেলা, এলাকা ও মূল্য দিন');return;}
-const ok=await postData('seller_listings',data);if(ok){alert('পোস্ট হয়েছে!');clearForm();loadAll();}else{alert('পোস্ট ব্যর্থ');}}}
-function clearForm(){document.getElementById('qName').value='';document.getElementById('qPhone').value='';document.getElementById('qDistrict').value='';document.getElementById('qArea').value='';document.getElementById('qBudget').value='';}
+// ── SESSION ───────────────────────────────────────────────────────────────────
+let session = JSON.parse(sessionStorage.getItem('bl_session')||'null');
 
-function openPostModal(type){const c=document.getElementById('postModalContent');if(type==='buyer'){c.innerHTML=`<h2>🛒 চাহিদা পোস্ট</h2><input id="pDistrict" placeholder="জেলা"><input id="pArea" placeholder="এলাকা"><input id="pBudget" placeholder="বাজেট (লক্ষ)"><textarea id="pNote" rows="2" placeholder="বিশেষ চাহিদা"></textarea><button onclick="submitPost('buyer')">পোস্ট</button>`;}else{c.innerHTML=`<h2>🏠 লিস্টিং পোস্ট</h2><input id="lDistrict" placeholder="জেলা"><input id="lArea" placeholder="এলাকা"><input id="lPrice" placeholder="মূল্য (লক্ষ)"><input id="lSize" placeholder="পরিমাণ (কাঠা)"><textarea id="lDesc" rows="2" placeholder="বিবরণ"></textarea><input id="lContact" placeholder="যোগাযোগের নম্বর"><button onclick="submitPost('seller')">পোস্ট</button>`;}openModal('postModal');}
-async function submitPost(type){if(!currentUser){alert('লগইন করুন');closeModal('postModal');return;}if(type==='buyer'){const data={name:currentUser.name,phone:currentUser.phone,district:document.getElementById('pDistrict').value,area:document.getElementById('pArea').value,budget:document.getElementById('pBudget').value,note:document.getElementById('pNote').value,user_type:'registered',role:'buyer',status:'active'};if(!data.district||!data.area||!data.budget){alert('সব তথ্য দিন');return;}
-const ok=await postData('buyer_requests',data);if(ok){alert('পোস্ট হয়েছে!');closeModal('postModal');loadAll();if(currentUser.type==='buyer')loadMyPosts();}}else{const data={seller_name:currentUser.name,seller_phone:document.getElementById('lContact').value,district:document.getElementById('lDistrict').value,area:document.getElementById('lArea').value,price:document.getElementById('lPrice').value,size:document.getElementById('lSize').value,description:document.getElementById('lDesc').value,user_type:'registered',role:'seller',status:'active'};if(!data.district||!data.area||!data.price){alert('সব তথ্য দিন');return;}
-const ok=await postData('seller_listings',data);if(ok){alert('পোস্ট হয়েছে!');closeModal('postModal');loadAll();if(currentUser.type==='company')loadMyListings();}}}
+function saveSession(s){ session=s; sessionStorage.setItem('bl_session',JSON.stringify(s)); }
+function clearSession(){ session=null; sessionStorage.removeItem('bl_session'); }
 
-function renderRequests(reqs,showPhone=false){if(!reqs||!reqs.length)return '<div class="card">কোনো চাহিদা নেই</div>';return reqs.map(r=>{const isReg=r.user_type==='registered';const canSee=currentUser?.type==='company';const phoneLink=fmtPhone(r.phone);return `<div class="card"><div class="card-header"><div class="profile-pic">🛒</div><div><div class="user-name">${r.name||'অতিথি'}</div><span class="role-badge role-buyer">ক্রেতা</span>${!isReg?'<span class="role-badge role-visitor">অতিথি</span>':''}</div></div><div class="price">💰 ${r.budget} লক্ষ</div><div>📍 ${r.district} - ${r.area}</div>${canSee?`<div class="action-buttons"><a href="tel:${phoneLink}" class="call-btn">📞 কল</a></div>`:(isReg?`<div class="login-prompt">🔒 যোগাযোগে কোম্পানি লগইন করুন</div>`:`<div class="login-prompt">⚠️ নাম্বার: ${r.phone}</div>`)}</div>`;}).join('');}
-function renderListings(listings){if(!listings||!listings.length)return '<div class="card">কোনো লিস্টিং নেই</div>';return listings.map(l=>{const canSee=currentUser?.type==='buyer';const phoneLink=fmtPhone(l.seller_phone);return `<div class="card"><div class="card-header"><div class="profile-pic">🏢</div><div><div class="user-name">${l.seller_name}</div><span class="role-badge role-seller">বিক্রেতা</span></div></div><div class="price">💰 ${l.price} লক্ষ</div><div>📍 ${l.district} - ${l.area}</div>${canSee?`<div class="action-buttons"><a href="tel:${phoneLink}" class="call-btn">📞 কল</a></div>`:`<div class="login-prompt">🔒 নাম্বার দেখতে লগইন করুন</div>`}</div>`;}).join('');}
+function updateNav() {
+  const nr = document.getElementById('nav-right');
+  if(session) {
+    const icon = session.type==='company' ? '🏢' : '👤';
+    nr.innerHTML = `
+      <span class="user-badge">${icon} ${session.name}</span>
+      ${session.type==='buyer'?`<button class="btn btn-green" onclick="openModal('post-modal')">+ চাহিদা</button>`:''}
+      <button class="btn btn-red" onclick="doLogout()">Logout</button>`;
+  } else {
+    nr.innerHTML = `
+      <button class="btn btn-outline" onclick="openModal('login-modal')">লগইন</button>
+      <button class="btn btn-green" onclick="openModal('register-modal')">নিবন্ধন</button>`;
+  }
+}
 
-async function loadAll(){const[buyerReq,sellerList]=await Promise.all([fetchData('buyer_requests?order=created_at.desc&status=eq.active'),fetchData('seller_listings?order=created_at.desc&status=eq.active')]);document.getElementById('allRequests').innerHTML=renderRequests(buyerReq);document.getElementById('recentRequests').innerHTML=buyerReq.slice(0,6).length?renderRequests(buyerReq.slice(0,6)):'<div class="card">কোনো চাহিদা নেই</div>';document.getElementById('allListings').innerHTML=renderListings(sellerList);document.getElementById('recentListings').innerHTML=sellerList.slice(0,6).length?renderListings(sellerList.slice(0,6)):'<div class="card">কোনো লিস্টিং নেই</div>';document.getElementById('totalBuyer').innerText=buyerReq.length;document.getElementById('totalSeller').innerText=sellerList.length;}
-async function loadMyPosts(){if(!currentUser||currentUser.type!=='buyer')return;const posts=await fetchData(`buyer_requests?phone=eq.${currentUser.phone}&order=created_at.desc`);if(!posts.length){document.getElementById('myPosts').innerHTML='<div class="card">কোনো পোস্ট নেই</div>';return;}document.getElementById('myPosts').innerHTML=posts.map(p=>`<div class="card"><div class="price">💰 ${p.budget} লক্ষ</div><div>📍 ${p.district} - ${p.area}</div><button onclick="deletePost('buyer_requests','${p.id}')" style="background:#dc2626; margin-top:8px; padding:6px; border:none; border-radius:6px; color:white;">ডিলিট</button></div>`).join('');}
-async function loadMyListings(){if(!currentUser||currentUser.type!=='company')return;const listings=await fetchData(`seller_listings?seller_phone=eq.${currentUser.phone}&order=created_at.desc`);if(!listings.length){document.getElementById('myListings').innerHTML='<div class="card">কোনো লিস্টিং নেই</div>';return;}document.getElementById('myListings').innerHTML=listings.map(l=>`<div class="card"><div class="price">💰 ${l.price} লক্ষ</div><div>📍 ${l.district} - ${l.area}</div><button onclick="deletePost('seller_listings','${l.id}')" style="background:#dc2626; margin-top:8px; padding:6px; border:none; border-radius:6px; color:white;">ডিলিট</button></div>`).join('');}
-async function deletePost(table,id){if(confirm('ডিলিট?')){await delData(table,id);loadAll();if(table==='buyer_requests')loadMyPosts();else loadMyListings();}}
+function doLogout(){ clearSession(); updateNav(); toast('লগআউট হয়েছে','info'); loadAll(); }
 
-async function registerBuyer(){const name=document.getElementById('regName').value;const phone=document.getElementById('regPhone').value;const pass=document.getElementById('regPassword').value;const district=document.getElementById('regDistrict').value;if(!name||!phone||!pass){alert('সব তথ্য দিন');return;}const hashed=await hashPass(pass);const existing=await fetchData(`buyers?phone=eq.${phone}`);if(existing.length){alert('নম্বর আগে আছে');showLoginForm();return;}const ok=await postData('buyers',{name,phone,password_hash:hashed,district});if(ok){currentUser={name,phone,type:'buyer'};localStorage.setItem('buyland_user',JSON.stringify(currentUser));updateUI();closeModal('registerModal');alert('রেজিস্ট্রেশন সফল!');loadAll();}}
-function showLoginForm(){closeModal('registerModal');openModal('loginModal');}
-async function loginBuyer(){const phone=document.getElementById('loginPhone').value;const pass=document.getElementById('loginPassword').value;const hashed=await hashPass(pass);const buyers=await fetchData(`buyers?phone=eq.${phone}&password_hash=eq.${hashed}`);if(buyers.length){currentUser={name:buyers[0].name,phone,type:'buyer'};localStorage.setItem('buyland_user',JSON.stringify(currentUser));updateUI();closeModal('loginModal');alert('লগইন সফল!');loadAll();loadMyPosts();}else{alert('নম্বর বা পাসওয়ার্ড ভুল');}}
-async function registerCompany(){const pass=document.getElementById('compRegPassword').value;const hashed=await hashPass(pass);const data={company_name:document.getElementById('compRegName').value,email:document.getElementById('compRegEmail').value,phone:document.getElementById('compRegPhone').value,username:document.getElementById('compRegUsername').value,password_hash:hashed,trade_license:document.getElementById('compTradeLicense').value,status:'pending'};const ok=await postData('companies',data);if(ok){alert('নিবন্ধন সফল! অনুমোদনের পর লগইন করতে পারবেন');closeModal('companyRegisterModal');}else{alert('ব্যর্থ');}}
-async function companyLogin(){const user=document.getElementById('compUsername').value;const pass=document.getElementById('compPassword').value;const hashed=await hashPass(pass);const comps=await fetchData(`companies?username=eq.${user}`);if(comps.length&&comps[0].password_hash===hashed){if(comps[0].status!=='approved'){alert('অ্যাকাউন্ট অনুমোদিত হয়নি');return;}currentUser={name:comps[0].company_name,phone:comps[0].phone,type:'company'};localStorage.setItem('buyland_user',JSON.stringify(currentUser));updateUI();closeModal('companyLoginModal');alert('লগইন সফল!');loadAll();loadMyListings();}else{alert('ইউজারনেম বা পাসওয়ার্ড ভুল');}}
-function showCompanyRegister(){closeModal('companyLoginModal');openModal('companyRegisterModal');}
-function updateUI(){const area=document.getElementById('userArea');const myPosts=document.getElementById('myPostsBtn');const myList=document.getElementById('myListingsBtn');if(currentUser){area.innerHTML=`<span class="user-badge ${currentUser.type==='company'?'badge-company':'badge-buyer'}">${currentUser.type==='company'?'কোম্পানি':'ক্রেতা'}</span> ${currentUser.name} <button class="logout-btn" onclick="logout()">প্রস্থান</button>`;myPosts.style.display=currentUser.type==='buyer'?'block':'none';myList.style.display=currentUser.type==='company'?'block':'none';}else{area.innerHTML=`<button class="logout-btn" onclick="openModal('loginModal')">ক্রেতা লগইন</button> <button class="logout-btn" onclick="openModal('companyLoginModal')">কোম্পানি লগইন</button>`;myPosts.style.display='none';myList.style.display='none';}}
-function logout(){localStorage.removeItem('buyland_user');currentUser=null;updateUI();loadAll();alert('লগআউট');}
-function openRoleModal(){openModal('roleModal');}
-function showPage(page){document.getElementById('homePage').style.display=page==='home'?'block':'none';document.getElementById('buyersPage').style.display=page==='buyers'?'block':'none';document.getElementById('sellersPage').style.display=page==='sellers'?'block':'none';document.getElementById('mypostsPage').style.display=page==='myposts'?'block':'none';document.getElementById('mylistingsPage').style.display=page==='mylistings'?'block':'none';if(page==='myposts')loadMyPosts();if(page==='mylistings')loadMyListings();}
-function openModal(id){document.getElementById(id).style.display='flex';}
-function closeModal(id){document.getElementById(id).style.display='none';}
-window.onload=()=>{updateUI();loadAll();};
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const user = document.getElementById('l-user').value.trim();
+  const pass = document.getElementById('l-pass').value.trim();
+  if(!user||!pass){toast('সব তথ্য দিন','error');return;}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true; btn.textContent='⏳...';
+  try {
+    // buyer check
+    const buyers = await sb(`buyers?phone=eq.${encodeURIComponent(user)}&password=eq.${encodeURIComponent(pass)}`);
+    if(buyers&&buyers.length){
+      saveSession({id:buyers[0].id,name:buyers[0].name,phone:buyers[0].phone,type:'buyer'});
+      closeModal('login-modal'); updateNav();
+      toast(`স্বাগতম ${buyers[0].name}! 👋`,'success');
+      btn.disabled=false; btn.textContent='🔐 লগইন করুন'; return;
+    }
+    // company check
+    const comps = await sb(`companies?username=eq.${encodeURIComponent(user)}&password=eq.${encodeURIComponent(pass)}`);
+    if(comps&&comps.length){
+      if(comps[0].status!=='approved'){toast('আপনার কোম্পানি এখনো অনুমোদিত হয়নি','error');btn.disabled=false;btn.textContent='🔐 লগইন করুন';return;}
+      saveSession({id:comps[0].id,name:comps[0].company_name,username:comps[0].username,type:'company'});
+      closeModal('login-modal'); updateNav();
+      toast(`স্বাগতম ${comps[0].company_name}! 🏢`,'success');
+      loadAll(); btn.disabled=false; btn.textContent='🔐 লগইন করুন'; return;
+    }
+    toast('ভুল তথ্য দিয়েছেন','error');
+  } catch(e){ toast('সমস্যা হয়েছে','error'); }
+  btn.disabled=false; btn.textContent='🔐 লগইন করুন';
+}
+
+// ── REGISTER BUYER ────────────────────────────────────────────────────────────
+async function doRegisterBuyer() {
+  const name=document.getElementById('r-name').value.trim();
+  const phone=document.getElementById('r-phone').value.trim();
+  const pass=document.getElementById('r-pass').value.trim();
+  const district=document.getElementById('r-district').value;
+  if(!name||!phone||!pass){toast('সব তথ্য পূরণ করুন','error');return;}
+  const btn=document.getElementById('reg-btn');
+  btn.disabled=true; btn.textContent='⏳...';
+  try {
+    const existing=await sb(`buyers?phone=eq.${encodeURIComponent(phone)}`);
+    if(existing&&existing.length){toast('এই নম্বর আগে নিবন্ধিত। লগইন করুন','error');btn.disabled=false;btn.textContent='✅ নিবন্ধন করুন';return;}
+    const res=await sb('buyers',{method:'POST',body:JSON.stringify({name,phone,password:pass,district})});
+    if(res){
+      saveSession({id:res[0].id,name,phone,type:'buyer'});
+      closeModal('register-modal'); updateNav();
+      toast(`নিবন্ধন সফল! স্বাগতম ${name} 🎉`,'success');
+    }
+  } catch(e){ toast('সমস্যা হয়েছে','error'); }
+  btn.disabled=false; btn.textContent='✅ নিবন্ধন করুন';
+}
+
+// ── REGISTER COMPANY ──────────────────────────────────────────────────────────
+async function doRegisterCompany() {
+  const name=document.getElementById('c-name').value.trim();
+  const phone=document.getElementById('c-phone').value.trim();
+  const username=document.getElementById('c-username').value.trim();
+  const pass=document.getElementById('c-pass').value.trim();
+  if(!name||!phone||!username||!pass){toast('সব তথ্য পূরণ করুন','error');return;}
+  const btn=document.getElementById('comp-reg-btn');
+  btn.disabled=true; btn.textContent='⏳...';
+  try {
+    await sb('companies',{method:'POST',body:JSON.stringify({
+      company_name:name,phone,email:document.getElementById('c-email').value.trim(),
+      address:document.getElementById('c-address').value.trim(),
+      district:document.getElementById('c-district').value,
+      username,password:pass,status:'pending'
+    })});
+    closeModal('company-register-modal');
+    toast('নিবন্ধন অনুরোধ পাঠানো হয়েছে! আমরা যাচাই করব 🎉','success');
+  } catch(e){ toast('সমস্যা হয়েছে — username আগে নেওয়া থাকতে পারে','error'); }
+  btn.disabled=false; btn.textContent='✅ নিবন্ধন অনুরোধ পাঠান';
+}
+
+// ── POST REQUEST ──────────────────────────────────────────────────────────────
+function requireBuyerLogin() {
+  // guest fields দেখানো বা লুকানো
+  const isGuest = !session || session.type !== 'buyer';
+  document.getElementById('guest-fields').style.display = isGuest ? 'block' : 'none';
+  document.getElementById('guest-warning').style.display = isGuest ? 'block' : 'none';
+  document.getElementById('post-modal-sub').textContent = isGuest
+    ? '⚠️ লগইন ছাড়াও পোস্ট করতে পারবেন — তবে নাম্বার সবাই দেখবে'
+    : '✅ আপনার তথ্য শুধু verified কোম্পানি দেখতে পাবে';
+  openModal('post-modal');
+}
+
+async function doPostRequest() {
+  const district=document.getElementById('p-district').value;
+  const area=document.getElementById('p-area').value.trim();
+  const budget=document.getElementById('p-budget').value.trim();
+  if(!district||!area||!budget){toast('সব তথ্য পূরণ করুন','error');return;}
+
+  let buyerName, buyerPhone, buyerId=null, isGuest=false;
+
+  if(session&&session.type==='buyer'){
+    buyerName=session.name; buyerPhone=session.phone; buyerId=session.id;
+  } else {
+    // Guest
+    buyerName=document.getElementById('p-guest-name').value.trim();
+    buyerPhone=document.getElementById('p-guest-phone').value.trim();
+    if(!buyerName||!buyerPhone){toast('নাম ও ফোন নম্বর দিন','error');return;}
+    isGuest=true;
+  }
+
+  const btn=document.getElementById('post-btn');
+  btn.disabled=true; btn.textContent='⏳...';
+  try {
+    await sb('buyer_requests',{method:'POST',body:JSON.stringify({
+      buyer_id:buyerId, buyer_name:buyerName, buyer_phone:buyerPhone,
+      district, area, land_type:document.getElementById('p-type').value,
+      size:document.getElementById('p-size').value.trim(),
+      budget, note:document.getElementById('p-note').value.trim(),
+      is_guest:isGuest
+    })});
+    closeModal('post-modal');
+    toast('✅ চাহিদা পোস্ট হয়েছে!','success');
+    ['p-area','p-size','p-budget','p-note','p-guest-name','p-guest-phone'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('p-district').selectedIndex=0;
+    showTab('requests');
+  } catch(e){ toast('সমস্যা হয়েছে','error'); }
+  btn.disabled=false; btn.textContent='✅ চাহিদা পোস্ট করুন';
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function timeAgo(iso){
+  const d=Math.floor((new Date()-new Date(iso))/1000);
+  if(d<60)return 'এইমাত্র';if(d<3600)return Math.floor(d/60)+'m আগে';
+  if(d<86400)return Math.floor(d/3600)+'h আগে';return Math.floor(d/86400)+'d আগে';
+}
+
+async function loadAll() {
+  const [listings,requests,companies] = await Promise.all([
+    sb('listings?order=created_at.desc&limit=50'),
+    sb('buyer_requests?order=created_at.desc&limit=50'),
+    sb('companies?status=eq.approved&order=created_at.desc')
+  ]);
+  document.getElementById('s-listings').textContent=listings?.length||0;
+  document.getElementById('s-requests').textContent=requests?.length||0;
+  document.getElementById('s-companies').textContent=companies?.length||0;
+  renderListings(listings||[]);
+  renderRequests(requests||[]);
+  renderCompanies(companies||[]);
+}
+
+function renderListings(data) {
+  const c=document.getElementById('view-listings');
+  if(!data.length){c.innerHTML=`<div class="empty">কোনো জমির তালিকা নেই</div>`;return;}
+  c.innerHTML=`<div class="cards">${data.map(l=>{
+    const imgs=l.images||[];
+    const imgHtml=imgs.length
+      ?`<div style="height:150px;overflow:hidden;position:relative"><img src="${imgs[0]}" style="width:100%;height:150px;object-fit:cover"><div class="card-badge badge-sale">বিক্রয়</div></div>`
+      :`<div class="card-img">🏡<div class="card-badge badge-sale">বিক্রয়</div></div>`;
+    const waBtn=l.whatsapp?`<a href="https://wa.me/${l.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" style="flex:1;text-decoration:none"><button class="btn btn-green" style="width:100%;font-size:12px;padding:8px;background:#25D366">💬 WhatsApp</button></a>`:'';
+    const companyBadge = l.company_name
+      ? `<div style="margin-top:6px;padding:6px 10px;background:#1e3a5f;border-radius:8px;font-size:12px">🏢 <strong style="color:#60a5fa">${l.company_name}</strong> <span style="background:#3b82f6;color:#fff;font-size:10px;padding:2px 6px;border-radius:8px;margin-left:4px">বিক্রেতা</span></div>`
+      : `<div style="font-size:12px;color:var(--gray);margin-top:4px">👤 ${l.name} <span style="background:#334155;color:#94a3b8;font-size:10px;padding:2px 6px;border-radius:8px;margin-left:4px">ব্যক্তিগত</span></div>`;
+    return `<div class="card">${imgHtml}
+      <div class="card-body">
+        <div class="card-title">${l.district} — ${l.area}</div>
+        <div class="card-meta"><span>🏷 ${l.land_type}</span><span>📐 ${l.size}</span><span>⏱ ${timeAgo(l.created_at)}</span></div>
+        <div class="card-price">${l.price} লক্ষ</div>
+        <div class="card-desc">${l.description||''}</div>
+        ${companyBadge}
+        <div class="card-footer" style="margin-top:8px">
+          <button class="btn btn-outline" style="color:#60a5fa;border-color:#60a5fa" onclick="showContact('${l.name}','${l.phone}','${l.whatsapp||''}')">📞 ${l.phone}</button>
+          ${waBtn}
+        </div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderRequests(data) {
+  const c=document.getElementById('view-requests');
+  const isCompany = session&&session.type==='company';
+  if(!data.length){c.innerHTML=`<div class="empty">কোনো চাহিদা নেই</div>`;return;}
+  c.innerHTML=`<div class="cards">${data.map(r=>{
+    const isGuest = r.is_guest;
+    const badge = isGuest
+      ? `<span style="background:#475569;color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700">👤 অতিথি</span>`
+      : `<span style="background:#16a34a;color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700">🟢 ক্রেতা</span>`;
+    const phoneVisible = isGuest || isCompany;
+    return `<div class="card">
+      <div class="card-img" style="background:linear-gradient(135deg,#1e3a1e,#166534)">🔍<div class="card-badge badge-req">চাহিদা</div></div>
+      <div class="card-body">
+        <div class="card-title">${r.district} — ${r.area}</div>
+        <div class="card-meta"><span>🏷 ${r.land_type}</span><span>📐 ${r.size||'—'}</span><span>⏱ ${timeAgo(r.created_at)}</span></div>
+        <div class="card-price">💰 বাজেট: ${r.budget} লক্ষ</div>
+        <div class="card-desc">${r.note||''}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <span style="font-size:13px;color:var(--gray)">👤 ${r.buyer_name}</span>
+          ${badge}
+        </div>
+        ${phoneVisible
+          ? `<a href="https://wa.me/${r.buyer_phone.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="width:100%;background:#25D366;margin-top:4px">💬 WhatsApp: ${r.buyer_phone}</button></a>`
+          : `<div class="locked">🔒 ফোন নম্বর দেখতে <a href="#" onclick="openModal('login-modal')" style="color:var(--green)">কোম্পানি হিসেবে লগইন করুন</a></div>`
+        }
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderCompanies(data) {
+  const c=document.getElementById('view-companies');
+  if(!data.length){c.innerHTML=`<div class="empty">কোনো অনুমোদিত কোম্পানি নেই</div>`;return;}
+  c.innerHTML=`<div class="cards">${data.map(comp=>`
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(135deg,#1e2d3a,#1e3a5f)">🏢<div class="card-badge badge-company">✅ ভেরিফাইড</div></div>
+      <div class="card-body">
+        <div class="card-title">${comp.company_name}</div>
+        <div class="card-meta"><span>📍 ${comp.district}</span></div>
+        ${session
+          ? `<div class="card-desc">📞 ${comp.phone}<br>${comp.email?`📧 ${comp.email}`:''}<br>📌 ${comp.address||''}</div>`
+          : `<div class="locked">🔒 যোগাযোগের তথ্য দেখতে <a href="#" onclick="openModal('login-modal')" style="color:var(--green)">লগইন করুন</a></div>`
+        }
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function showTab(tab) {
+  ['listings','requests','companies'].forEach(t=>{
+    document.getElementById('view-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('tab-'+t).className='tab'+(t===tab?' active':'');
+  });
+}
+
+// ── CONTACT ───────────────────────────────────────────────────────────────────
+function showContact(name,phone,wa){
+  alert(`নাম: ${name}\nফোন: ${phone}${wa?'\nWhatsApp: '+wa:''}`);
+}
+
+// ── MODAL HELPERS ─────────────────────────────────────────────────────────────
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function switchModal(a,b){closeModal(a);openModal(b);}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastT;
+function toast(msg,type='success'){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=`toast ${type} show`;
+  clearTimeout(toastT); toastT=setTimeout(()=>el.className='toast',3500);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+updateNav(); loadAll();
 </script>
 </body>
 </html>
