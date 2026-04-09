@@ -5,69 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BUYLAND26 - Admin Panel</title>
 <style>
-:root{--green:#16a34a;--green2:#15803d;--red:#dc2626;--yellow:#f59e0b;--dark:#111827;--gray:#6b7280;--border:#e5e7eb;--light:#f0fdf4;}
+:root{--green:#16a34a;--green2:#15803d;--red:#dc2626;--yellow:#f59e0b;--dark:#0f172a;--card:#1e293b;--border:#334155;--gray:#94a3b8;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#fff;min-height:100vh;}
+body{font-family:'Segoe UI',sans-serif;background:var(--dark);color:#fff;min-height:100vh;}
 
-/* LOGIN */
-.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);}
-.login-box{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:40px;width:90%;max-width:380px;text-align:center;}
-.login-logo{font-size:32px;font-weight:900;letter-spacing:3px;color:var(--green);margin-bottom:4px;}
-.login-logo span{color:#fff;}
-.login-tag{font-size:12px;color:var(--gray);margin-bottom:28px;}
-.login-box input{width:100%;padding:12px 16px;background:#0f172a;border:2px solid #334155;border-radius:10px;color:#fff;font-size:15px;margin-bottom:14px;outline:none;}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;width:90%;max-width:360px;text-align:center;}
+.logo{font-size:28px;font-weight:900;letter-spacing:3px;color:var(--green);margin-bottom:4px;}
+.logo span{color:#fff;}
+.login-tag{font-size:12px;color:var(--gray);margin-bottom:24px;}
+.login-box input{width:100%;padding:11px 14px;background:var(--dark);border:2px solid var(--border);border-radius:8px;color:#fff;font-size:14px;margin-bottom:12px;outline:none;}
 .login-box input:focus{border-color:var(--green);}
-.login-btn{width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;}
-.login-btn:hover{background:var(--green2);}
-.login-err{color:#f87171;font-size:13px;margin-top:8px;display:none;}
+.login-btn{width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;}
+.err{color:#f87171;font-size:13px;margin-top:8px;display:none;}
 
-/* ADMIN */
 .admin{display:none;}
-.topbar{background:#1e293b;border-bottom:2px solid var(--green);padding:0 20px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.topbar-logo{font-size:20px;font-weight:900;color:var(--green);letter-spacing:2px;}
+.topbar{background:var(--card);border-bottom:2px solid var(--green);padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-size:18px;font-weight:900;color:var(--green);}
 .topbar-logo span{color:#fff;}
-.topbar-right{display:flex;align-items:center;gap:12px;}
-.badge{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
-.logout-btn{padding:7px 14px;background:#dc2626;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;}
+.logout-btn{padding:7px 14px;background:var(--red);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;}
 
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:20px;}
-.stat-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:18px;text-align:center;}
-.stat-card .num{font-size:32px;font-weight:800;color:var(--green);}
-.stat-card .lbl{font-size:12px;color:var(--gray);margin-top:4px;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:16px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.stat-card .num{font-size:28px;font-weight:800;color:var(--green);}
+.stat-card .lbl{font-size:11px;color:var(--gray);margin-top:3px;}
 
-/* TABS */
-.admin-tabs{display:flex;gap:4px;background:#1e293b;padding:5px;border-radius:12px;margin:0 20px 20px;border:1px solid #334155;}
-.admin-tab{flex:1;padding:9px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray);text-align:center;transition:all .2s;}
-.admin-tab.active{background:var(--green);color:#fff;}
+.tabs{display:flex;gap:3px;background:var(--card);padding:5px;border-radius:12px;margin:0 16px 16px;border:1px solid var(--border);flex-wrap:wrap;}
+.tab{flex:1;padding:8px 6px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:var(--gray);text-align:center;transition:all .2s;min-width:60px;}
+.tab.active{background:var(--green);color:#fff;}
 
-/* CARDS */
-.section{padding:0 20px 30px;}
-.item-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;margin-bottom:12px;}
-.item-card .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.item-card h3{font-size:15px;font-weight:700;color:#fff;}
-.item-card .meta{font-size:12px;color:var(--gray);margin-bottom:6px;}
-.item-card .price{font-size:16px;font-weight:800;color:var(--green);}
-.item-card .desc{font-size:12px;color:#94a3b8;margin:6px 0;}
-.item-card .contact{font-size:12px;color:#60a5fa;margin-bottom:10px;}
-.del-btn{background:#dc2626;color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:700;}
-.del-btn:hover{background:#b91c1c;}
-.approve-btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:700;margin-right:6px;}
+.section{padding:0 16px 30px;}
+.item-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;}
+.item-card .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.item-card h3{font-size:14px;font-weight:700;}
+.item-card .meta{font-size:12px;color:var(--gray);margin-bottom:4px;}
+.item-card .price{font-size:15px;font-weight:800;color:var(--green);margin-bottom:4px;}
+.item-card .contact{font-size:12px;color:#60a5fa;margin-bottom:8px;}
+.item-card .desc{font-size:12px;color:#64748b;margin-bottom:8px;}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap;}
+.btn{padding:7px 12px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:600;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-yellow{background:var(--yellow);color:#000;}
+.btn-gray{background:#334155;color:#fff;}
+.pending-badge{background:var(--yellow);color:#000;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700;}
+.approved-badge{background:var(--green);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700;}
+.rejected-badge{background:var(--red);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700;}
 .img-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
-.img-row img{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #334155;}
+.img-row img{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;}
 .empty{text-align:center;padding:40px;color:var(--gray);}
-.spinner{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--gray);}
-.spin{width:28px;height:28px;border:3px solid #334155;border-top:3px solid var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;}
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--gray);}
+.spin{width:26px;height:26px;border:3px solid var(--border);border-top:3px solid var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* SEARCH */
-.search-bar{margin:0 20px 16px;position:relative;}
-.search-bar input{width:100%;padding:10px 16px;background:#1e293b;border:2px solid #334155;border-radius:10px;color:#fff;font-size:14px;outline:none;}
+.search-bar{margin:0 16px 14px;}
+.search-bar input{width:100%;padding:10px 14px;background:var(--card);border:2px solid var(--border);border-radius:10px;color:#fff;font-size:14px;outline:none;}
 .search-bar input:focus{border-color:var(--green);}
-
-.toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;}
+.notify-dot{background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;font-weight:700;}
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 16px;border-radius:10px;font-size:13px;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;max-width:260px;}
 .toast.show{transform:translateY(0);opacity:1;}
-.toast.error{background:var(--red);}
+.toast.success{background:var(--green);color:#fff;}
+.toast.error{background:var(--red);color:#fff;}
 </style>
 </head>
 <body>
@@ -75,194 +72,205 @@ body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#fff;min-height:
 <!-- LOGIN -->
 <div class="login-wrap" id="login-wrap">
   <div class="login-box">
-    <div class="login-logo">BUY<span>LAND</span></div>
-    <div class="login-tag">Admin Panel — শুধু অ্যাডমিনের জন্য</div>
-    <input type="text" id="admin-user" placeholder="Username">
-    <input type="password" id="admin-pass" placeholder="Password">
-    <button class="login-btn" onclick="doLogin()">🔐 Login</button>
-    <div class="login-err" id="login-err">❌ Username বা Password ভুল!</div>
+    <div class="logo">BUY<span>LAND</span>26</div>
+    <div class="login-tag">🔐 Admin Panel</div>
+    <input type="text" id="au" placeholder="Username">
+    <input type="password" id="ap" placeholder="Password">
+    <button class="login-btn" onclick="doLogin()">লগইন করুন</button>
+    <div class="err" id="err">❌ ভুল তথ্য!</div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div class="admin" id="admin-panel">
+<!-- ADMIN -->
+<div class="admin" id="admin">
   <div class="topbar">
-    <div class="topbar-logo">BUY<span>LAND</span></div>
-    <div class="topbar-right">
-      <span class="badge">🔐 Admin</span>
-      <button class="logout-btn" onclick="doLogout()">Logout</button>
-    </div>
+    <div class="topbar-logo">BUY<span>LAND</span>26 <span style="font-size:11px;color:var(--gray)">Admin</span></div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
   </div>
 
-  <!-- STATS -->
   <div class="stats-grid">
-    <div class="stat-card"><div class="num" id="a-listings">...</div><div class="lbl">📋 মোট তালিকা</div></div>
-    <div class="stat-card"><div class="num" id="a-requests">...</div><div class="lbl">🔍 মোট চাহিদা</div></div>
-    <div class="stat-card"><div class="num" id="a-offers">...</div><div class="lbl">📨 মোট অফার</div></div>
-    <div class="stat-card"><div class="num" id="a-today">...</div><div class="lbl">📅 আজকের এন্ট্রি</div></div>
+    <div class="stat-card"><div class="num" id="a-listings">...</div><div class="lbl">📋 জমি তালিকা</div></div>
+    <div class="stat-card"><div class="num" id="a-requests">...</div><div class="lbl">🔍 ক্রেতার চাহিদা</div></div>
+    <div class="stat-card"><div class="num" id="a-buyers">...</div><div class="lbl">👤 নিবন্ধিত ক্রেতা</div></div>
+    <div class="stat-card"><div class="num" id="a-pending">...</div><div class="lbl">⏳ অনুমোদন বাকি</div></div>
   </div>
 
-  <!-- TABS -->
-  <div class="admin-tabs">
-    <div class="admin-tab active" onclick="showAdminTab('listings')">📋 তালিকা</div>
-    <div class="admin-tab" onclick="showAdminTab('requests')">🔍 চাহিদা</div>
-    <div class="admin-tab" onclick="showAdminTab('offers')">📨 অফার</div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('companies')" id="tab-companies">🏢 কোম্পানি <span id="pending-dot"></span></div>
+    <div class="tab" onclick="showTab('listings')" id="tab-listings">📋 জমি</div>
+    <div class="tab" onclick="showTab('requests')" id="tab-requests">🔍 চাহিদা</div>
+    <div class="tab" onclick="showTab('buyers')" id="tab-buyers">👤 ক্রেতা</div>
   </div>
 
-  <!-- SEARCH -->
   <div class="search-bar">
-    <input type="text" id="search-input" placeholder="🔍 খুঁজুন..." oninput="doSearch()">
+    <input type="text" id="search" placeholder="🔍 খুঁজুন..." oninput="doSearch()">
   </div>
 
-  <!-- LISTINGS -->
-  <div class="section" id="sec-listings">
-    <div class="spinner"><div class="spin"></div> লোড হচ্ছে...</div>
-  </div>
-
-  <!-- REQUESTS -->
-  <div class="section" id="sec-requests" style="display:none">
-    <div class="spinner"><div class="spin"></div> লোড হচ্ছে...</div>
-  </div>
-
-  <!-- OFFERS -->
-  <div class="section" id="sec-offers" style="display:none">
-    <div class="spinner"><div class="spin"></div> লোড হচ্ছে...</div>
-  </div>
+  <div id="sec-companies"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
+  <div id="sec-listings" style="display:none"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
+  <div id="sec-requests" style="display:none"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
+  <div id="sec-buyers" style="display:none"><div class="loading"><div class="spin"></div> লোড হচ্ছে...</div></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────────
 const ADMIN_USER = 'buyland26';
 const ADMIN_PASS = 'Buyland@2026';
 const SUPA_URL   = 'https://pbrnwbfftropifpnsqgp.supabase.co';
-const SUPA_KEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicm53YmZmdHJvcGlmcG5zcWdwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTQ1Njg3MiwiZXhwIjoyMDkxMDMyODcyfQ.KLjXm5oy9ftDrpxJhdqMzu7ixAFCxvD-tUcvjBHmyPo';
+const SVC_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicm53YmZmdHJvcGlmcG5zcWdwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTQ1Njg3MiwiZXhwIjoyMDkxMDMyODcyfQ.KLjXm5oy9ftDrpxJhdqMzu7ixAFCxvD-tUcvjBHmyPo';
 
-// ── SUPABASE ──────────────────────────────────────────────────────────────────
+let allData = {listings:[],requests:[],companies:[],buyers:[]};
+
 async function sb(path, opts={}) {
   const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
-    headers:{'apikey':SUPA_KEY,'Authorization':`Bearer ${SUPA_KEY}`,'Content-Type':'application/json','Prefer':'return=representation',...opts.headers},
+    headers:{'apikey':SVC_KEY,'Authorization':`Bearer ${SVC_KEY}`,'Content-Type':'application/json','Prefer':'return=representation',...(opts.headers||{})},
     ...opts
   });
-  if(!res.ok){const e=await res.text();throw new Error(e);}
-  return res.status===204?null:res.json();
+  if(res.status===204) return null;
+  return res.ok ? res.json() : null;
 }
 
-// ── LOGIN ─────────────────────────────────────────────────────────────────────
+// LOGIN
 function doLogin() {
-  const u=document.getElementById('admin-user').value.trim();
-  const p=document.getElementById('admin-pass').value.trim();
-  if(u===ADMIN_USER && p===ADMIN_PASS){
+  const u=document.getElementById('au').value.trim();
+  const p=document.getElementById('ap').value.trim();
+  if(u===ADMIN_USER && p===ADMIN_PASS) {
     document.getElementById('login-wrap').style.display='none';
-    document.getElementById('admin-panel').style.display='block';
+    document.getElementById('admin').style.display='block';
     loadAll();
   } else {
-    document.getElementById('login-err').style.display='block';
+    document.getElementById('err').style.display='block';
   }
 }
-
 function doLogout(){
   document.getElementById('login-wrap').style.display='flex';
-  document.getElementById('admin-panel').style.display='none';
-  document.getElementById('admin-user').value='';
-  document.getElementById('admin-pass').value='';
+  document.getElementById('admin').style.display='none';
+  document.getElementById('au').value='';
+  document.getElementById('ap').value='';
 }
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-document.addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-
-// ── DATA ──────────────────────────────────────────────────────────────────────
-let allListings=[], allRequests=[], allOffers=[];
-
+// LOAD ALL
 async function loadAll() {
   try {
-    const [l,r,o] = await Promise.all([
+    const [l,r,c,b] = await Promise.all([
       sb('listings?order=created_at.desc'),
-      sb('requests?order=created_at.desc'),
-      sb('offers?order=created_at.desc')
+      sb('buyer_requests?order=created_at.desc'),
+      sb('companies?order=created_at.desc'),
+      sb('buyers?order=created_at.desc')
     ]);
-    allListings=l||[]; allRequests=r||[]; allOffers=o||[];
+    allData.listings=l||[];
+    allData.requests=r||[];
+    allData.companies=c||[];
+    allData.buyers=b||[];
     updateStats();
-    renderListings(allListings);
-    renderRequests(allRequests);
-    renderOffers(allOffers);
+    renderCompanies(allData.companies);
+    renderListings(allData.listings);
+    renderRequests(allData.requests);
+    renderBuyers(allData.buyers);
   } catch(e){ toast('ডেটা লোড হয়নি','error'); }
 }
 
 function updateStats() {
-  document.getElementById('a-listings').textContent=allListings.length;
-  document.getElementById('a-requests').textContent=allRequests.length;
-  document.getElementById('a-offers').textContent=allOffers.length;
-  const today=new Date().toDateString();
-  const todayCount=[...allListings,...allRequests].filter(x=>new Date(x.created_at).toDateString()===today).length;
-  document.getElementById('a-today').textContent=todayCount;
+  const pending = allData.companies.filter(c=>c.status==='pending').length;
+  document.getElementById('a-listings').textContent=allData.listings.length;
+  document.getElementById('a-requests').textContent=allData.requests.length;
+  document.getElementById('a-buyers').textContent=allData.buyers.length;
+  document.getElementById('a-pending').textContent=pending;
+  document.getElementById('pending-dot').innerHTML = pending>0?`<span class="notify-dot">${pending}</span>`:'';
 }
 
 function timeAgo(iso){
-  const d=new Date(iso),now=new Date(),diff=Math.floor((now-d)/1000);
-  if(diff<60) return 'এইমাত্র';
-  if(diff<3600) return Math.floor(diff/60)+'m আগে';
-  if(diff<86400) return Math.floor(diff/3600)+'h আগে';
-  return Math.floor(diff/86400)+'d আগে';
+  const d=Math.floor((new Date()-new Date(iso))/1000);
+  if(d<60)return 'এইমাত্র';if(d<3600)return Math.floor(d/60)+'m আগে';
+  if(d<86400)return Math.floor(d/3600)+'h আগে';return Math.floor(d/86400)+'d আগে';
 }
 
-// ── RENDER LISTINGS ───────────────────────────────────────────────────────────
+// RENDER COMPANIES
+function renderCompanies(data) {
+  const c=document.getElementById('sec-companies');
+  if(!data.length){c.innerHTML=`<div class="empty">কোনো কোম্পানি নেই</div>`;return;}
+  c.innerHTML=`<div class="section">${data.map(comp=>`
+    <div class="item-card">
+      <div class="top">
+        <h3>🏢 ${comp.company_name}</h3>
+        <span class="${comp.status==='approved'?'approved-badge':comp.status==='rejected'?'rejected-badge':'pending-badge'}">
+          ${comp.status==='approved'?'✅ অনুমোদিত':comp.status==='rejected'?'❌ প্রত্যাখ্যাত':'⏳ অপেক্ষমাণ'}
+        </span>
+      </div>
+      <div class="meta">📍 ${comp.district||'—'} | ⏱ ${timeAgo(comp.created_at)}</div>
+      <div class="contact">📞 ${comp.phone} | 👤 username: ${comp.username}</div>
+      <div class="desc">${comp.email?`📧 ${comp.email} | `:''}📌 ${comp.address||'—'}</div>
+      <div class="btn-row">
+        ${comp.status!=='approved'?`<button class="btn btn-green" onclick="updateCompany('${comp.id}','approved')">✅ অনুমোদন দিন</button>`:''}
+        ${comp.status!=='rejected'?`<button class="btn btn-yellow" onclick="updateCompany('${comp.id}','rejected')">❌ প্রত্যাখ্যান করুন</button>`:''}
+        <button class="btn btn-red" onclick="deleteItem('companies','${comp.id}')">🗑 Delete</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+// APPROVE / REJECT COMPANY
+async function updateCompany(id, status) {
+  try {
+    await sb(`companies?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({status})});
+    toast(status==='approved'?'✅ কোম্পানি অনুমোদিত!':'❌ প্রত্যাখ্যান করা হয়েছে', status==='approved'?'success':'error');
+    await loadAll();
+  } catch(e){ toast('সমস্যা হয়েছে','error'); }
+}
+
+// RENDER LISTINGS
 function renderListings(data) {
   const c=document.getElementById('sec-listings');
   if(!data.length){c.innerHTML=`<div class="empty">কোনো তালিকা নেই</div>`;return;}
-  c.innerHTML=data.map(l=>`
+  c.innerHTML=`<div class="section">${data.map(l=>`
     <div class="item-card">
-      <div class="top">
-        <h3>🏡 ${l.district} — ${l.area}</h3>
-        <span style="font-size:11px;color:var(--gray)">${timeAgo(l.created_at)}</span>
-      </div>
-      <div class="meta">🏷 ${l.land_type} &nbsp;|&nbsp; 📐 ${l.size}</div>
+      <div class="top"><h3>🏡 ${l.district} — ${l.area}</h3><span style="font-size:11px;color:var(--gray)">${timeAgo(l.created_at)}</span></div>
+      <div class="meta">🏷 ${l.land_type} | 📐 ${l.size}</div>
       <div class="price">${l.price} লক্ষ</div>
       <div class="desc">${l.description||'—'}</div>
-      ${l.images&&l.images.length?`<div class="img-row">${l.images.map(i=>`<img src="${i}" onclick="viewImg('${i}')">`).join('')}</div>`:''}
-      <div class="contact">👤 ${l.name} &nbsp;|&nbsp; 📞 ${l.phone}${l.whatsapp?` &nbsp;|&nbsp; 💬 ${l.whatsapp}`:''}</div>
-      <button class="del-btn" onclick="deleteItem('listings','${l.id}')">🗑 Delete</button>
-    </div>`).join('');
+      ${l.images&&l.images.length?`<div class="img-row">${l.images.map(i=>`<img src="${i}" onclick="window.open('${i}','_blank')">`).join('')}</div>`:''}
+      <div class="contact">👤 ${l.name} | 📞 ${l.phone}${l.whatsapp?` | 💬 ${l.whatsapp}`:''}</div>
+      <div class="btn-row">
+        <button class="btn btn-red" onclick="deleteItem('listings','${l.id}')">🗑 Delete</button>
+      </div>
+    </div>`).join('')}</div>`;
 }
 
-// ── RENDER REQUESTS ───────────────────────────────────────────────────────────
+// RENDER REQUESTS
 function renderRequests(data) {
   const c=document.getElementById('sec-requests');
   if(!data.length){c.innerHTML=`<div class="empty">কোনো চাহিদা নেই</div>`;return;}
-  c.innerHTML=data.map(r=>`
+  c.innerHTML=`<div class="section">${data.map(r=>`
     <div class="item-card">
-      <div class="top">
-        <h3>🔍 ${r.district} — ${r.area}</h3>
-        <span style="font-size:11px;color:var(--gray)">${timeAgo(r.created_at)}</span>
-      </div>
-      <div class="meta">🏷 ${r.land_type} &nbsp;|&nbsp; 📐 ${r.size||'—'}</div>
-      <div class="price">💰 বাজেট: ${r.budget}</div>
+      <div class="top"><h3>🔍 ${r.district} — ${r.area}</h3><span style="font-size:11px;color:var(--gray)">${timeAgo(r.created_at)}</span></div>
+      <div class="meta">🏷 ${r.land_type} | 📐 ${r.size||'—'}</div>
+      <div class="price">💰 বাজেট: ${r.budget} লক্ষ</div>
       <div class="desc">${r.note||'—'}</div>
-      <div class="contact">👤 ${r.name} &nbsp;|&nbsp; 📞 ${r.phone}</div>
-      <button class="del-btn" onclick="deleteItem('requests','${r.id}')">🗑 Delete</button>
-    </div>`).join('');
-}
-
-// ── RENDER OFFERS ─────────────────────────────────────────────────────────────
-function renderOffers(data) {
-  const c=document.getElementById('sec-offers');
-  if(!data.length){c.innerHTML=`<div class="empty">কোনো অফার নেই</div>`;return;}
-  c.innerHTML=data.map(o=>`
-    <div class="item-card">
-      <div class="top">
-        <h3>📨 অফার</h3>
-        <span style="font-size:11px;color:var(--gray)">${timeAgo(o.created_at)}</span>
+      <div class="contact">👤 ${r.buyer_name} | 📞 ${r.buyer_phone}</div>
+      <div class="btn-row">
+        <button class="btn btn-red" onclick="deleteItem('buyer_requests','${r.id}')">🗑 Delete</button>
       </div>
-      <div class="desc">${o.description}</div>
-      ${o.price?`<div class="price">${o.price} লক্ষ</div>`:''}
-      <div class="contact">👤 ${o.seller_name} &nbsp;|&nbsp; 📞 ${o.seller_phone}</div>
-      <button class="del-btn" onclick="deleteItem('offers','${o.id}')">🗑 Delete</button>
-    </div>`).join('');
+    </div>`).join('')}</div>`;
 }
 
-// ── DELETE ────────────────────────────────────────────────────────────────────
+// RENDER BUYERS
+function renderBuyers(data) {
+  const c=document.getElementById('sec-buyers');
+  if(!data.length){c.innerHTML=`<div class="empty">কোনো ক্রেতা নেই</div>`;return;}
+  c.innerHTML=`<div class="section">${data.map(b=>`
+    <div class="item-card">
+      <div class="top"><h3>👤 ${b.name}</h3><span style="font-size:11px;color:var(--gray)">${timeAgo(b.created_at)}</span></div>
+      <div class="contact">📞 ${b.phone} | 📍 ${b.district||'—'}</div>
+      <div class="btn-row">
+        <button class="btn btn-red" onclick="deleteItem('buyers','${b.id}')">🗑 Delete</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+// DELETE
 async function deleteItem(table, id) {
-  if(!confirm('এটা মুছে দেবেন?')) return;
+  if(!confirm('মুছে দেবেন?')) return;
   try {
     await sb(`${table}?id=eq.${id}`,{method:'DELETE'});
     toast('✅ মুছে দেওয়া হয়েছে','success');
@@ -270,32 +278,29 @@ async function deleteItem(table, id) {
   } catch(e){ toast('মুছতে পারিনি','error'); }
 }
 
-// ── TABS ──────────────────────────────────────────────────────────────────────
-function showAdminTab(tab) {
-  ['listings','requests','offers'].forEach(t=>{
+// TABS
+function showTab(tab) {
+  ['companies','listings','requests','buyers'].forEach(t=>{
     document.getElementById('sec-'+t).style.display=t===tab?'block':'none';
-  });
-  document.querySelectorAll('.admin-tab').forEach((b,i)=>{
-    b.className='admin-tab'+(['listings','requests','offers'][i]===tab?' active':'');
+    document.getElementById('tab-'+t).className='tab'+(t===tab?' active':'');
   });
 }
 
-// ── SEARCH ────────────────────────────────────────────────────────────────────
+// SEARCH
 function doSearch() {
-  const q=document.getElementById('search-input').value.toLowerCase();
-  const fl=allListings.filter(l=>`${l.district}${l.area}${l.land_type}${l.name}${l.phone}`.toLowerCase().includes(q));
-  const fr=allRequests.filter(r=>`${r.district}${r.area}${r.land_type}${r.name}${r.phone}`.toLowerCase().includes(q));
-  renderListings(fl); renderRequests(fr);
+  const q=document.getElementById('search').value.toLowerCase();
+  if(!q){renderCompanies(allData.companies);renderListings(allData.listings);renderRequests(allData.requests);renderBuyers(allData.buyers);return;}
+  renderCompanies(allData.companies.filter(c=>`${c.company_name}${c.phone}${c.district}`.toLowerCase().includes(q)));
+  renderListings(allData.listings.filter(l=>`${l.district}${l.area}${l.name}${l.phone}`.toLowerCase().includes(q)));
+  renderRequests(allData.requests.filter(r=>`${r.district}${r.area}${r.buyer_name}${r.buyer_phone}`.toLowerCase().includes(q)));
+  renderBuyers(allData.buyers.filter(b=>`${b.name}${b.phone}`.toLowerCase().includes(q)));
 }
 
-// ── IMAGE VIEW ────────────────────────────────────────────────────────────────
-function viewImg(src){window.open(src,'_blank');}
-
-// ── TOAST ─────────────────────────────────────────────────────────────────────
+// TOAST
 let toastT;
 function toast(msg,type='success'){
   const el=document.getElementById('toast');
-  el.textContent=msg; el.className='toast '+type+' show';
+  el.textContent=msg; el.className=`toast ${type} show`;
   clearTimeout(toastT); toastT=setTimeout(()=>el.className='toast',3000);
 }
 </script>
