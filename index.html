@@ -12,7 +12,7 @@
         .logo span{color:white;}
         .nav-links{display:flex;gap:10px;flex-wrap:wrap;}
         .nav-links button{background:transparent;border:1px solid #334155;color:#cbd5e1;padding:8px 16px;border-radius:8px;cursor:pointer;}
-        .nav-links button:hover{background:#16a34a;border-color:#16a34a;color:white;}
+        .nav-links button:hover{background:#16a34a;color:white;}
         .user-info{display:flex;align-items:center;gap:12px;background:#0f172a;padding:5px 12px;border-radius:20px;}
         .user-badge{padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold;}
         .badge-company{background:#16a34a;color:white;}
@@ -31,8 +31,7 @@
         .btn-warning{background:#f59e0b;color:white;padding:12px 24px;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;margin:5px;}
         .section-title{font-size:24px;margin:30px 0 20px;padding-bottom:10px;border-bottom:2px solid #334155;}
         .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px;margin-bottom:30px;}
-        .card{background:#1e293b;border-radius:12px;padding:20px;border:1px solid #334155;transition:all 0.3s;}
-        .card:hover{transform:translateY(-3px);border-color:#16a34a;}
+        .card{background:#1e293b;border-radius:12px;padding:20px;border:1px solid #334155;}
         .card-header{display:flex;align-items:center;gap:12px;margin-bottom:15px;}
         .profile-pic{width:45px;height:45px;border-radius:50%;background:#0f172a;display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid #16a34a;}
         .user-name{font-weight:bold;font-size:16px;}
@@ -43,8 +42,8 @@
         .badge{display:inline-block;background:#16a34a;padding:3px 10px;border-radius:20px;font-size:11px;margin-bottom:10px;}
         .price{font-size:18px;font-weight:bold;margin:8px 0;color:#fbbf24;}
         .action-buttons{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
-        .call-btn{background:#16a34a;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;font-size:14px;flex:1;text-align:center;text-decoration:none;}
-        .whatsapp-btn{background:#25D366;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;font-size:14px;flex:1;text-align:center;text-decoration:none;}
+        .call-btn{background:#16a34a;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;flex:1;text-align:center;text-decoration:none;}
+        .whatsapp-btn{background:#25D366;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;flex:1;text-align:center;text-decoration:none;}
         .login-prompt{background:#0f172a;padding:10px;border-radius:8px;margin-top:12px;text-align:center;border:1px dashed #16a34a;}
         .quick-post{background:#1e293b;border-radius:16px;padding:20px;margin-bottom:30px;border:1px solid #334155;}
         .quick-post h3{color:#16a34a;margin-bottom:15px;}
@@ -76,6 +75,7 @@
 </div>
 
 <div class="container">
+    <!-- হোম পেজ -->
     <div id="homeSection">
         <div class="hero">
             <h1>সঠিক জমি, <span>সঠিক মানুষের কাছে</span></h1>
@@ -90,6 +90,7 @@
             <button class="btn-warning" onclick="openModal('companyLoginModal')">🏢 কোম্পানি লগইন</button>
         </div>
         
+        <!-- দ্রুত পোস্ট ফর্ম -->
         <div class="quick-post">
             <h3>⚡ দ্রুত আপনার প্রয়োজন জানান (লগইন ছাড়া)</h3>
             <div class="quick-post-row">
@@ -108,7 +109,10 @@
             <textarea id="quickNote" rows="2" placeholder="বিশেষ চাহিদা (ঐচ্ছিক)"></textarea>
             <div class="quick-post-row">
                 <input type="tel" id="quickWhatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর (ঐচ্ছিক)">
-                <select id="quickRole"><option value="buyer">🛒 আমি ক্রেতা (জমি কিনতে চাই)</option><option value="seller">🏠 আমি বিক্রেতা (জমি বিক্রি করতে চাই)</option></select>
+                <select id="quickRole">
+                    <option value="buyer">🛒 আমি ক্রেতা (জমি কিনতে চাই)</option>
+                    <option value="seller">🏠 আমি বিক্রেতা (জমি বিক্রি করতে চাই)</option>
+                </select>
             </div>
             <button onclick="submitQuickPost()" style="background:#16a34a; width:100%;">📢 পোস্ট করুন</button>
             <div class="warning-text">⚠️ লগইন ছাড়া পোস্ট করলে আপনার নাম্বার সবার কাছে visible থাকবে। নাম্বার প্রাইভেসির জন্য রেজিস্ট্রেশন করুন।</div>
@@ -121,22 +125,26 @@
         <div id="recentListings" class="card-grid"></div>
     </div>
 
+    <!-- ক্রেতার চাহিদা পেজ -->
     <div id="buyerRequestsSection" style="display:none;">
         <h2 class="section-title">📋 সকল ক্রেতার চাহিদা</h2>
         <div id="allRequests" class="card-grid"></div>
     </div>
 
+    <!-- বিক্রেতার লিস্টিং পেজ -->
     <div id="sellerListingsSection" style="display:none;">
         <h2 class="section-title">🏠 সকল বিক্রেতার লিস্টিং</h2>
         <div id="allListings" class="card-grid"></div>
     </div>
 
+    <!-- আমার পোস্ট -->
     <div id="myPostsSection" style="display:none;">
         <h2 class="section-title">📝 আমার চাহিদা পোস্ট</h2>
         <button class="btn-primary" onclick="openPostModal('buyer')" style="margin-bottom:20px;">+ নতুন চাহিদা পোস্ট করুন</button>
         <div id="myPosts" class="card-grid"></div>
     </div>
 
+    <!-- আমার লিস্টিং -->
     <div id="myListingsSection" style="display:none;">
         <h2 class="section-title">🏢 আমার জমির লিস্টিং</h2>
         <button class="btn-warning" onclick="openPostModal('seller')" style="margin-bottom:20px;">+ নতুন লিস্টিং পোস্ট করুন</button>
@@ -159,7 +167,7 @@
         <input type="text" id="regName" placeholder="আপনার নাম">
         <input type="tel" id="regPhone" placeholder="মোবাইল নম্বর">
         <input type="password" id="regPassword" placeholder="পাসওয়ার্ড">
-        <select id="regDistrict"><option>ঢাকা</option><option>গাজীপুর</option><option>নারায়ণগঞ্জ</option></select>
+        <select id="regDistrict"><option>ঢাকা</option><option>গাজীপুর</option><option>নারায়ণগঞ্জ</option><option>চট্টগ্রাম</option><option>রাজশাহী</option><option>খুলনা</option><option>সিলেট</option><option>বরিশাল</option><option>রংপুর</option></select>
         <button onclick="registerBuyer()">নিবন্ধন করুন</button>
         <div class="switch-role">ইতিমধ্যে নিবন্ধিত? <a onclick="showLoginForm()">লগইন করুন</a></div>
     </div>
@@ -212,27 +220,34 @@
 const SUPA_URL='https://pbrnwbfftropifpnsqgp.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicm53YmZmdHJvcGlmcG5zcWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NTY4NzIsImV4cCI6MjA5MTAzMjg3Mn0.58RaOoLFpfD6b0FeayHwG-XnF_qOvJDkkEGjoaGgbKw';
 let currentUser=JSON.parse(localStorage.getItem('buyland_user')||'null');
+
 async function supabaseFetch(path){try{const res=await fetch(`${SUPA_URL}/rest/v1/${path}`,{headers:{'apikey':SUPA_KEY,'Authorization':`Bearer ${SUPA_KEY}`}});return res.ok?await res.json():[];}catch(e){return[];}}
 async function supabasePost(path,data){try{const res=await fetch(`${SUPA_URL}/rest/v1/${path}`,{method:'POST',headers:{'apikey':SUPA_KEY,'Authorization':`Bearer ${SUPA_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(data)});return res.ok;}catch(e){return false;}}
 async function supabaseDelete(path,id){try{const res=await fetch(`${SUPA_URL}/rest/v1/${path}?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPA_KEY,'Authorization':`Bearer ${SUPA_KEY}`}});return res.ok;}catch(e){return false;}}
 async function hashPassword(password){const encoder=new TextEncoder();const data=encoder.encode(password);const hash=await crypto.subtle.digest('SHA-256',data);return btoa(String.fromCharCode(...new Uint8Array(hash)));}
 function formatPhoneForLink(phone){let clean=String(phone).replace(/[^0-9]/g,'');if(clean.startsWith('0'))clean='88'+clean;if(!clean.startsWith('88'))clean='88'+clean;return clean;}
+
 async function submitQuickPost(){const role=document.getElementById('quickRole').value;if(role==='buyer'){const postData={name:document.getElementById('quickName').value||"অতিথি",phone:document.getElementById('quickPhone').value,district:document.getElementById('quickDistrict').value,area:document.getElementById('quickArea').value,land_type:document.getElementById('quickLandType').value,size:document.getElementById('quickSize').value,budget:document.getElementById('quickBudget').value,note:document.getElementById('quickNote').value,whatsapp:document.getElementById('quickWhatsapp').value,user_type:'visitor',role:'buyer',status:'active'};if(!postData.phone||!postData.district||!postData.area||!postData.budget){alert('মোবাইল নম্বর, জেলা, এলাকা এবং বাজেট অবশ্যই দিতে হবে');return;}
 const success=await supabasePost('buyer_requests',postData);if(success){alert('পোস্ট হয়েছে!');clearQuickForm();loadAllRequests();}else{alert('পোস্ট ব্যর্থ');}}else{const postData={seller_name:document.getElementById('quickName').value||"বিক্রেতা",seller_phone:document.getElementById('quickPhone').value,district:document.getElementById('quickDistrict').value,area:document.getElementById('quickArea').value,land_type:document.getElementById('quickLandType').value,size:document.getElementById('quickSize').value,price:document.getElementById('quickBudget').value,description:document.getElementById('quickNote').value,whatsapp:document.getElementById('quickWhatsapp').value,user_type:'visitor',role:'seller',status:'active'};if(!postData.seller_phone||!postData.district||!postData.area||!postData.size||!postData.price){alert('সব তথ্য পূরণ করুন');return;}
 const success=await supabasePost('seller_listings',postData);if(success){alert('পোস্ট হয়েছে!');clearQuickForm();loadAllListings();}else{alert('পোস্ট ব্যর্থ');}}}
 function clearQuickForm(){document.getElementById('quickName').value='';document.getElementById('quickPhone').value='';document.getElementById('quickDistrict').value='';document.getElementById('quickArea').value='';document.getElementById('quickSize').value='';document.getElementById('quickBudget').value='';document.getElementById('quickNote').value='';document.getElementById('quickWhatsapp').value='';}
+
 function openPostModal(type){const modalContent=document.getElementById('postModalContent');if(type==='buyer'){modalContent.innerHTML=`<h2>🛒 আপনার জমির প্রয়োজন জানান</h2><input type="text" id="postDistrict" placeholder="জেলা *"><input type="text" id="postArea" placeholder="এলাকা *"><select id="postLandType"><option>আবাসিক</option><option>কৃষি</option><option>বাণিজ্যিক</option></select><input type="text" id="postSize" placeholder="পরিমাণ (কাঠা/বিঘা)"><input type="text" id="postBudget" placeholder="বাজেট (লক্ষ টাকায়) *"><textarea id="postNote" rows="3" placeholder="বিশেষ চাহিদা"></textarea><input type="tel" id="postWhatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর (ঐচ্ছিক)"><button onclick="submitRegisteredPost('buyer')">চাহিদা জমা দিন</button>`;}else{modalContent.innerHTML=`<h2>🏠 আপনার জমির তথ্য দিন</h2><input type="text" id="listingDistrict" placeholder="জেলা *"><input type="text" id="listingArea" placeholder="এলাকা *"><select id="listingLandType"><option>আবাসিক</option><option>কৃষি</option><option>বাণিজ্যিক</option></select><input type="text" id="listingSize" placeholder="পরিমাণ (কাঠা/বিঘা) *"><input type="text" id="listingPrice" placeholder="মূল্য (লক্ষ টাকায়) *"><textarea id="listingDescription" rows="3" placeholder="বিস্তারিত বিবরণ"></textarea><input type="tel" id="listingContact" placeholder="যোগাযোগের নম্বর *"><input type="tel" id="listingWhatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর (ঐচ্ছিক)"><button onclick="submitRegisteredPost('seller')">লিস্টিং পোস্ট করুন</button>`;}openModal('postModal');}
+
 async function submitRegisteredPost(type){if(!currentUser){alert('পোস্ট করতে লগইন করুন');closeModal('postModal');return;}if(type==='buyer'){const postData={name:currentUser.name,phone:currentUser.phone,district:document.getElementById('postDistrict').value,area:document.getElementById('postArea').value,land_type:document.getElementById('postLandType').value,size:document.getElementById('postSize').value,budget:document.getElementById('postBudget').value,note:document.getElementById('postNote').value,whatsapp:document.getElementById('postWhatsapp').value,user_type:'registered',role:'buyer',status:'active'};if(!postData.district||!postData.area||!postData.budget){alert('জেলা, এলাকা এবং বাজেট দিন');return;}
 const success=await supabasePost('buyer_requests',postData);if(success){alert('পোস্ট হয়েছে!');closeModal('postModal');loadAllRequests();loadMyPosts();}}else{const postData={seller_name:currentUser.name,seller_phone:document.getElementById('listingContact').value,district:document.getElementById('listingDistrict').value,area:document.getElementById('listingArea').value,land_type:document.getElementById('listingLandType').value,size:document.getElementById('listingSize').value,price:document.getElementById('listingPrice').value,description:document.getElementById('listingDescription').value,whatsapp:document.getElementById('listingWhatsapp').value,user_type:'registered',role:'seller',status:'active'};if(!postData.district||!postData.area||!postData.size||!postData.price){alert('সব তথ্য দিন');return;}
 const success=await supabasePost('seller_listings',postData);if(success){alert('পোস্ট হয়েছে!');closeModal('postModal');loadAllListings();if(currentUser.type==='company')loadMyListings();}}}
+
 function renderBuyerRequests(requests){if(!requests||requests.length===0)return '<div class="card">কোনো চাহিদা নেই</div>';return requests.map(req=>{const isRegistered=req.user_type==='registered';const canSeeContact=currentUser?.type==='company';const whatsappNumber=req.whatsapp||req.phone;const phoneLink=formatPhoneForLink(req.phone);const whatsappLink=formatPhoneForLink(whatsappNumber);return `<div class="card"><div class="card-header"><div class="profile-pic">🛒</div><div class="user-details"><div class="user-name">${req.name||'অতিথি'}</div><span class="role-badge role-buyer">🛒 ক্রেতা</span>${!isRegistered?'<span class="role-badge role-visitor">অতিথি</span>':'<span class="role-badge role-company">রেজিস্টার্ড</span>'}</div></div><div class="badge">${req.district} - ${req.area}</div><div class="price">💰 ${req.budget} লক্ষ টাকা</div>${req.note?`<small>📝 ${req.note}</small>`:''}${canSeeContact?`<div class="action-buttons"><a href="tel:${phoneLink}" class="call-btn">📞 কল করুন</a><a href="https://wa.me/${whatsappLink}" target="_blank" class="whatsapp-btn">💬 হোয়াটসঅ্যাপ</a></div>`:(isRegistered?`<div class="login-prompt">🔒 যোগাযোগ করতে <button onclick="openModal('companyLoginModal')">কোম্পানি লগইন</button></div>`:`<div class="login-prompt">⚠️ নাম্বার: ${req.phone}</div>`)}</div>`;}).join('');}
 function renderSellerListings(listings){if(!listings||listings.length===0)return '<div class="card">কোনো লিস্টিং নেই</div>';return listings.map(listing=>{const canSeeContact=currentUser?.type==='buyer';const phoneLink=formatPhoneForLink(listing.seller_phone);const whatsappLink=formatPhoneForLink(listing.whatsapp||listing.seller_phone);return `<div class="card"><div class="card-header"><div class="profile-pic">🏢</div><div class="user-details"><div class="user-name">${listing.seller_name}</div><span class="role-badge role-seller">🏠 বিক্রেতা</span></div></div><div class="badge">${listing.district} - ${listing.area}</div><div>📐 ${listing.size} | 🏷️ ${listing.land_type}</div><div class="price">💰 ${listing.price} লক্ষ টাকা</div>${listing.description?`<small>📝 ${listing.description}</small>`:''}${canSeeContact?`<div class="action-buttons"><a href="tel:${phoneLink}" class="call-btn">📞 কল করুন</a><a href="https://wa.me/${whatsappLink}" target="_blank" class="whatsapp-btn">💬 হোয়াটসঅ্যাপ</a></div>`:`<div class="login-prompt">🔒 নাম্বার দেখতে <button onclick="openModal('loginModal')">ক্রেতা লগইন</button></div>`}</div>`;}).join('');}
+
 async function loadAllRequests(){const requests=await supabaseFetch('buyer_requests?order=created_at.desc&status=eq.active');document.getElementById('allRequests').innerHTML=renderBuyerRequests(requests);document.getElementById('recentRequests').innerHTML=requests.slice(0,6).length?renderBuyerRequests(requests.slice(0,6)):'<div class="card">কোনো চাহিদা নেই</div>';document.getElementById('totalBuyerPosts').innerText=requests.length;}
 async function loadAllListings(){const listings=await supabaseFetch('seller_listings?order=created_at.desc&status=eq.active');document.getElementById('allListings').innerHTML=renderSellerListings(listings);document.getElementById('recentListings').innerHTML=listings.slice(0,6).length?renderSellerListings(listings.slice(0,6)):'<div class="card">কোনো লিস্টিং নেই</div>';document.getElementById('totalSellerPosts').innerText=listings.length;}
 async function loadMyPosts(){if(!currentUser||currentUser.type!=='buyer')return;const posts=await supabaseFetch(`buyer_requests?phone=eq.${currentUser.phone}&order=created_at.desc`);if(posts.length===0){document.getElementById('myPosts').innerHTML='<div class="card">আপনার কোনো পোস্ট নেই</div>';return;}document.getElementById('myPosts').innerHTML=posts.map(p=>`<div class="card"><div class="price">💰 ${p.budget} লক্ষ টাকা</div><div class="badge">${p.district} - ${p.area}</div><button onclick="deleteBuyerPost('${p.id}')" style="background:#dc2626; margin-top:10px; padding:8px; border:none; border-radius:6px; color:white;">🗑 ডিলিট</button></div>`).join('');}
 async function loadMyListings(){if(!currentUser||currentUser.type!=='company')return;const listings=await supabaseFetch(`seller_listings?seller_phone=eq.${currentUser.phone}&order=created_at.desc`);if(listings.length===0){document.getElementById('myListings').innerHTML='<div class="card">আপনার কোনো লিস্টিং নেই</div>';return;}document.getElementById('myListings').innerHTML=listings.map(l=>`<div class="card"><div class="price">💰 ${l.price} লক্ষ টাকা</div><div class="badge">${l.district} - ${l.area}</div><button onclick="deleteSellerListing('${l.id}')" style="background:#dc2626; margin-top:10px; padding:8px; border:none; border-radius:6px; color:white;">🗑 ডিলিট</button></div>`).join('');}
 async function deleteBuyerPost(id){if(confirm('ডিলিট?')){await supabaseDelete('buyer_requests',id);loadMyPosts();loadAllRequests();}}
 async function deleteSellerListing(id){if(confirm('ডিলিট?')){await supabaseDelete('seller_listings',id);loadMyListings();loadAllListings();}}
+
 async function registerBuyer(){const name=document.getElementById('regName').value;const phone=document.getElementById('regPhone').value;const password=document.getElementById('regPassword').value;const district=document.getElementById('regDistrict').value;if(!name||!phone||!password){alert('সব তথ্য দিন');return;}const hashed=await hashPassword(password);const existing=await supabaseFetch(`buyers?phone=eq.${phone}`);if(existing.length){alert('নম্বর আগে আছে');showLoginForm();return;}const success=await supabasePost('buyers',{name,phone,password_hash:hashed,district});if(success){currentUser={name,phone,type:'buyer'};localStorage.setItem('buyland_user',JSON.stringify(currentUser));updateUserUI();closeModal('registerModal');alert('রেজিস্ট্রেশন সফল!');loadAllRequests();}}
 function showLoginForm(){closeModal('registerModal');openModal('loginModal');}
 async function loginBuyer(){const phone=document.getElementById('loginPhone').value;const password=document.getElementById('loginPassword').value;const hashed=await hashPassword(password);const buyers=await supabaseFetch(`buyers?phone=eq.${phone}&password_hash=eq.${hashed}`);if(buyers.length){currentUser={name:buyers[0].name,phone,type:'buyer'};localStorage.setItem('buyland_user',JSON.stringify(currentUser));updateUserUI();closeModal('loginModal');alert('লগইন সফল!');loadAllRequests();loadMyPosts();}else{alert('নম্বর বা পাসওয়ার্ড ভুল');}}
