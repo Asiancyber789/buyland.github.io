@@ -48,7 +48,7 @@ nav{background:var(--card);border-bottom:2px solid var(--green);padding:0 16px;h
 .card-price{font-size:17px;font-weight:800;color:var(--green);margin-bottom:8px;}
 .card-desc{font-size:12px;color:#64748b;margin-bottom:8px;}
 .card-footer{display:flex;gap:8px;margin-top:8px;}
-.card-footer .btn{flex:1;font-size:12px;padding:8px;}
+.card-footer .btn{flex:1;font-size:12px;padding:8px;text-align:center;}
 .locked{background:#1e3a2f;border:1px dashed var(--green);border-radius:8px;padding:10px;text-align:center;font-size:12px;color:var(--green);margin-bottom:8px;}
 .modal-bg{display:none;position:fixed;inset:0;background:#000000cc;z-index:200;align-items:center;justify-content:center;}
 .modal-bg.open{display:flex;}
@@ -78,6 +78,7 @@ nav{background:var(--card);border-bottom:2px solid var(--green);padding:0 16px;h
 footer{background:var(--card);border-top:1px solid var(--border);text-align:center;padding:18px;color:#475569;font-size:12px;margin-top:25px;}
 .gallery-container{position:relative;height:150px;overflow:hidden;cursor:pointer;}
 .gallery-container img{width:100%;height:150px;object-fit:cover;}
+a.btn-outline{text-decoration:none;display:inline-block;text-align:center;}
 @media(max-width:640px){.hero-logo{font-size:30px;}.hero h1{font-size:20px;}.stats{gap:14px;}.cards{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -129,7 +130,7 @@ footer{background:var(--card);border-top:1px solid var(--border);text-align:cent
     <div class="form-group"><label>বিবরণ</label><textarea id="lm-desc" rows="2" placeholder="জমির বিস্তারিত তথ্য..."></textarea></div>
     <div class="form-group">
       <label>📸 জমির ছবি (সর্বোচ্চ ৫টি) *</label>
-      <div id="lm-dropzone" style="border:2px dashed var(--green);border-radius:14px;padding:20px;text-align:center;cursor:pointer;background:#0f1f14;transition:0.2s">
+      <div id="lm-dropzone" style="border:2px dashed var(--green);border-radius:14px;padding:20px;text-align:center;cursor:pointer;background:#0f1f14">
         <div style="font-size:32px">📷</div>
         <div id="lm-upload-txt" style="font-size:13px;color:var(--green);font-weight:500">ছবি বেছে নিতে ক্লিক করুন</div>
         <div style="font-size:11px;color:#475569;margin-top:4px">JPG, PNG — প্রতিটি সর্বোচ্চ 5MB</div>
@@ -421,7 +422,7 @@ async function loadAll(){
   }catch(e){console.warn(e);}
 }
 
-// ==================== গ্যালারি স্লাইডার সহ renderListings ====================
+// ==================== renderListings (গ্যালারি + সরাসরি কল) ====================
 function renderListings(data){
   const container=document.getElementById('view-listings');
   if(!data.length){container.innerHTML='<div class="empty">🏜️ কোনো জমির তালিকা নেই</div>';return;}
@@ -445,11 +446,13 @@ function renderListings(data){
     const waBtn=l.whatsapp?`<a href="https://wa.me/${l.whatsapp.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="background:#25D366;width:100%">💬 WhatsApp</button></a>`:'';
     const compBadge=l.company_name?`<div style="background:#1e3a5f;padding:6px 10px;border-radius:10px;margin-top:8px;font-size:12px">🏢 ${escapeHtml(l.company_name)} <span style="background:#3b82f6;padding:2px 8px;border-radius:20px;margin-left:6px;font-size:10px">বিক্রেতা</span></div>`:`<div style="margin-top:8px;font-size:12px;color:var(--gray)">👤 ব্যক্তিগত বিক্রেতা</div>`;
     const isOwner=session&&((session.type==='buyer'&&session.phone===l.phone)||(session.type==='company'&&session.id===l.company_id));
-    return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><button class="btn btn-outline" onclick="alert('📞 ${l.phone}')">📞 যোগাযোগ</button>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 মুছুন</button>`:''}</div></div>`;
+    
+    // 🔧 সরাসরি কল করার লিংক (tel:)
+    return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline" style="text-decoration:none;display:inline-block;text-align:center;flex:1">📞 ${l.phone}</a>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 মুছুন</button>`:''}</div></div>`;
   }).join('')}</div>`;
 }
 
-// ==================== গ্যালারি খোলার ফাংশন ====================
+// ==================== গ্যালারি ফাংশন ====================
 function openGallery(images, startIndex){
   let currentIndex=startIndex;
   const modal=document.createElement('div');
