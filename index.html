@@ -47,6 +47,7 @@ nav{background:var(--card);border-bottom:2px solid var(--green);padding:0 16px;h
 .card-body{padding:14px;}
 .card-title{font-size:15px;font-weight:700;margin-bottom:5px;}
 .card-meta{font-size:12px;color:var(--gray);margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap;}
+.card-view{display:inline-flex;align-items:center;gap:4px;background:#1e293b;padding:2px 8px;border-radius:20px;font-size:11px;color:#94a3b8;}
 .card-price{font-size:17px;font-weight:800;color:var(--green);margin-bottom:8px;}
 .card-desc{font-size:12px;color:#64748b;margin-bottom:8px;}
 .card-footer{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
@@ -249,10 +250,34 @@ if(!res.ok) throw new Error('আপলোড ব্যর্থ');
 return `${SUPA_URL}/storage/v1/object/public/land-images/${fileName}`;
 }
 function generateSlug(name){
-let slug = name.toLowerCase().replace(/[^\u0980-\u09FFa-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-if(slug.length<3) slug = 'company';
-slug = slug + '-' + Date.now().toString().slice(-8);
+let slug=name.toLowerCase().replace(/[^\u0980-\u09FFa-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+if(slug.length<3) slug='company';
+slug=slug+'-'+Date.now().toString().slice(-8);
 return slug;
+}
+function escapeHtml(str){ if(!str)return ''; return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
+function timeAgo(iso){
+const d=Math.floor((Date.now()-new Date(iso))/1000);
+if(d<60)return'এইমাত্র';
+if(d<3600)return Math.floor(d/60)+'মি';
+if(d<86400)return Math.floor(d/3600)+'ঘ';
+return Math.floor(d/86400)+'দিন';
+}
+async function incrementViewCount(table,id){
+try{
+const data=await sb(`${table}?id=eq.${id}&select=view_count`);
+if(data&&data[0]){
+const currentCount=data[0].view_count||0;
+await sb(`${table}?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({view_count:currentCount+1})});
+}
+}catch(e){console.warn(e);}
+}
+function trackAndCount(table,id){
+const key=`viewed_${table}_${id}`;
+if(!sessionStorage.getItem(key)){
+incrementViewCount(table,id);
+sessionStorage.setItem(key,'true');
+}
 }
 let session=JSON.parse(sessionStorage.getItem('bl26_session')||'null');
 function saveSession(s){ session=s; sessionStorage.setItem('bl26_session',JSON.stringify(s)); }
@@ -270,8 +295,8 @@ nr.innerHTML=`<button class="btn btn-outline" onclick="openModal('login-modal')"
 }
 }
 function copyCompanyShareLink(){
-if(!session || session.type!=='company'){toast('শুধু কোম্পানি এই সুবিধা পাবে','error');return;}
-const shareUrl=`${window.location.origin}${window.location.pathname}?company=${encodeURIComponent(session.slug || session.id)}`;
+if(!session||session.type!=='company'){toast('শুধু কোম্পানি এই সুবিধা পাবে','error');return;}
+const shareUrl=`${window.location.origin}${window.location.pathname}?company=${encodeURIComponent(session.slug||session.id)}`;
 navigator.clipboard.writeText(shareUrl);
 toast('🔗 আপনার কোম্পানির লিংক কপি হয়েছে! এখন যেকোনো জায়গায় শেয়ার করুন','success');
 }
@@ -281,10 +306,10 @@ const companyIdOrSlug=params.get('company');
 if(!companyIdOrSlug) return false;
 try{
 let companies=await sb(`companies?status=eq.approved&or=(slug.eq.${companyIdOrSlug},id.eq.${companyIdOrSlug})`);
-if(!companies || companies.length===0){
+if(!companies||companies.length===0){
 companies=await sb(`companies?status=eq.approved&id=eq.${companyIdOrSlug}`);
 }
-if(companies && companies.length>0){
+if(companies&&companies.length>0){
 await showCompanyProfile(companies[0]);
 return true;
 }else{
@@ -317,23 +342,24 @@ contentDiv.innerHTML=`
 </div>
 `;
 const listingsContainer=document.getElementById('profile-listings-container');
-if(!listings || listings.length===0){
+if(!listings||listings.length===0){
 listingsContainer.innerHTML='<div class="empty">🏜️ এখনো কোনো জমির তালিকা নেই</div>';
 }else{
 listingsContainer.innerHTML=listings.map(l=>{
+const viewCount=l.view_count||0;
 const images=l.images;
 const hasImages=images&&Array.isArray(images)&&images.length>0;
 let galleryHtml='';
 if(hasImages){
-const imagesJson=JSON.stringify(images).replace(/"/g, '&quot;');
-galleryHtml=`<div class="gallery-container" style="height:150px;overflow:hidden;cursor:pointer" onclick="openGallery(${imagesJson}, 0)">
+const imagesJson=JSON.stringify(images).replace(/"/g,'&quot;');
+galleryHtml=`<div class="gallery-container" style="height:150px;overflow:hidden;cursor:pointer" onclick="openGallery(${imagesJson},0)">
 <img src="${images[0]}" style="width:100%;height:150px;object-fit:cover">
 <div class="card-badge badge-sale">বিক্রয়</div>
 </div>`;
 }else{
 galleryHtml=`<div class="card-img">🏡<div class="card-badge badge-sale">বিক্রয়</div></div>`;
 }
-return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline">📞 ${l.phone}</a></div></div></div>`;
+return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span class="card-view">👁️ ${viewCount}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline">📞 ${l.phone}</a></div></div></div>`;
 }).join('');
 }
 }
@@ -345,7 +371,7 @@ toast('লিংক কপি হয়েছে!','success');
 function closeCompanyProfile(){
 document.getElementById('company-profile-view').style.display='none';
 document.getElementById('main-tabs-wrap').style.display='block';
-window.history.pushState({}, '', window.location.pathname);
+window.history.pushState({},'',window.location.pathname);
 loadAll();
 showTab('listings');
 }
@@ -482,14 +508,6 @@ btn.disabled=false; btn.textContent='✅ জমি প্রকাশ করু�
 }
 async function deleteOwnRequest(id){ if(confirm('পোস্ট মুছে ফেলবেন?')){ await sb(`buyer_requests?id=eq.${id}`,{method:'DELETE'},true); toast('মুছে ফেলা হয়েছে','success'); loadAll(); } }
 async function deleteOwnListing(id){ if(confirm('লিস্টিং মুছে ফেলবেন?')){ await sb(`listings?id=eq.${id}`,{method:'DELETE'},true); toast('মুছে ফেলা হয়েছে','success'); loadAll(); } }
-function timeAgo(iso){
-const d=Math.floor((Date.now()-new Date(iso))/1000);
-if(d<60)return'এইমাত্র';
-if(d<3600)return Math.floor(d/60)+'মি';
-if(d<86400)return Math.floor(d/3600)+'ঘ';
-return Math.floor(d/86400)+'দিন';
-}
-function escapeHtml(str){ if(!str)return ''; return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
 async function loadAll(){
 try{
 const[listings,requests,companies]=await Promise.all([
@@ -509,13 +527,14 @@ function renderListings(data){
 const container=document.getElementById('view-listings');
 if(!data.length){container.innerHTML='<div class="empty">🏜️ কোনো জমির তালিকা নেই</div>';return;}
 container.innerHTML=`<div class="cards">${data.map(l=>{
+trackAndCount('listings',l.id);
 const images=l.images;
 const hasImages=images&&Array.isArray(images)&&images.length>0;
 const extraCount=hasImages?images.length-1:0;
 let galleryHtml='';
 if(hasImages){
-const imagesJson=JSON.stringify(images).replace(/"/g, '&quot;');
-galleryHtml=`<div class="gallery-container" style="position:relative;height:150px;overflow:hidden;cursor:pointer" onclick="openGallery(${imagesJson}, 0)">
+const imagesJson=JSON.stringify(images).replace(/"/g,'&quot;');
+galleryHtml=`<div class="gallery-container" style="position:relative;height:150px;overflow:hidden;cursor:pointer" onclick="openGallery(${imagesJson},0)">
 <img src="${images[0]}" style="width:100%;height:150px;object-fit:cover">
 <div class="card-badge badge-sale">বিক্রয়</div>
 ${extraCount>0?`<div style="position:absolute;bottom:8px;right:8px;background:#000000b3;color:#fff;padding:2px 8px;border-radius:20px;font-size:11px;z-index:2">📸 +${extraCount}</div>`:''}
@@ -526,7 +545,8 @@ galleryHtml=`<div class="card-img">🏡<div class="card-badge badge-sale">বি
 const waBtn=l.whatsapp?`<a href="https://wa.me/${l.whatsapp.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="background:#25D366;width:100%">💬 WhatsApp</button></a>`:'';
 const compBadge=l.company_name?`<div style="background:#1e3a5f;padding:6px 10px;border-radius:10px;margin-top:8px;font-size:12px">🏢 ${escapeHtml(l.company_name)} <span style="background:#3b82f6;padding:2px 8px;border-radius:20px;margin-left:6px;font-size:10px">বিক্রেতা</span></div>`:`<div style="margin-top:8px;font-size:12px;color:var(--gray)">👤 ব্যক্তিগত বিক্রেতা</div>`;
 const isOwner=session&&((session.type==='buyer'&&session.phone===l.phone)||(session.type==='company'&&session.id===l.company_id));
-return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline" style="text-decoration:none;display:inline-block;text-align:center;flex:1">📞 ${l.phone}</a>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 আমার পোস্ট মুছুন</button>`:''}</div></div>`;
+const viewCount=l.view_count||0;
+return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span><span class="card-view">👁️ ${viewCount}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline" style="text-decoration:none;display:inline-block;text-align:center;flex:1">📞 ${l.phone}</a>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 আমার পোস্ট মুছুন</button>`:''}</div></div>`;
 }).join('')}</div>`;
 }
 function renderRequests(data){
@@ -534,25 +554,25 @@ const container=document.getElementById('view-requests');
 const isCompany=session&&session.type==='company';
 if(!data.length){container.innerHTML='<div class="empty">🔍 কোনো চাহিদা নেই</div>';return;}
 container.innerHTML=`<div class="cards">${data.map(r=>{
+trackAndCount('buyer_requests',r.id);
 const isGuest=r.is_guest;
 const badge=isGuest?'<span style="background:#475569;padding:2px 8px;border-radius:20px;font-size:10px">অতিথি</span>':'<span style="background:#16a34a;padding:2px 8px;border-radius:20px;font-size:10px">ক্রেতা</span>';
 const phoneVisible=isGuest||isCompany;
 const isOwner=session&&session.type==='buyer'&&session.id===r.buyer_id;
-return `<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e3a1e,#166534)">🔍<div class="card-badge badge-req">চাহিদা</div></div><div class="card-body"><div class="card-title">${escapeHtml(r.district)} — ${escapeHtml(r.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(r.land_type)}</span><span>📐 ${escapeHtml(r.size||'—')}</span><span>⏱ ${timeAgo(r.created_at)}</span></div><div class="card-price">💰 বাজেট: ${r.budget} লক্ষ</div><div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span style="font-size:13px">👤 ${escapeHtml(r.buyer_name)}</span>${badge}</div>${phoneVisible?`<a href="https://wa.me/${r.buyer_phone.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="margin-top:6px;background:#25D366;width:100%">💬 WhatsApp: ${r.buyer_phone}</button></a>`:`<div class="locked">🔒 নাম্বার দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer;font-weight:500">কোম্পানি লগইন করুন</a></div>`}${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnRequest('${r.id}')">🗑 আমার পোস্ট মুছুন</button>`:''}</div></div>`;
+const viewCount=r.view_count||0;
+return `<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e3a1e,#166534)">🔍<div class="card-badge badge-req">চাহিদা</div></div><div class="card-body"><div class="card-title">${escapeHtml(r.district)} — ${escapeHtml(r.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(r.land_type)}</span><span>📐 ${escapeHtml(r.size||'—')}</span><span>⏱ ${timeAgo(r.created_at)}</span><span class="card-view">👁️ ${viewCount}</span></div><div class="card-price">💰 বাজেট: ${r.budget} লক্ষ</div><div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span style="font-size:13px">👤 ${escapeHtml(r.buyer_name)}</span>${badge}</div>${phoneVisible?`<a href="https://wa.me/${r.buyer_phone.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="margin-top:6px;background:#25D366;width:100%">💬 WhatsApp: ${r.buyer_phone}</button></a>`:`<div class="locked">🔒 নাম্বার দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer;font-weight:500">কোম্পানি লগইন করুন</a></div>`}${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnRequest('${r.id}')">🗑 আমার পোস্ট মুছুন</button>`:''}</div></div>`;
 }).join('')}</div>`;
 }
 function renderCompanies(data){
 const container=document.getElementById('view-companies');
 if(!data.length){container.innerHTML='<div class="empty">🏢 কোনো কোম্পানি নেই</div>';return;}
 container.innerHTML=`<div class="cards">${data.map(comp=>{
-const compJson=JSON.stringify(comp).replace(/"/g, '&quot;');
+const compJson=JSON.stringify(comp).replace(/"/g,'&quot;');
 return `<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e2d3a,#1e3a5f);cursor:pointer" onclick='showCompanyProfileFromCard(${compJson})'>🏢<div class="card-badge badge-company">✅ ভেরিফাইড</div></div><div class="card-body"><div class="card-title" style="cursor:pointer;color:var(--green)" onclick='showCompanyProfileFromCard(${compJson})'>${escapeHtml(comp.company_name)}</div><div class="card-meta">📍 ${escapeHtml(comp.district||'—')}</div>${session?`<div class="card-desc">📞 ${comp.phone}<br>📧 ${comp.email||''}<br>📜 লাইসেন্স: ${comp.trade_license||''}</div>`:`<div class="locked">🔒 তথ্য দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer">লগইন করুন</a></div>`}</div></div>`;
 }).join('')}</div>`;
 }
-function showCompanyProfileFromCard(company){
-showCompanyProfile(company);
-}
-function openGallery(images, startIndex){
+function showCompanyProfileFromCard(company){ showCompanyProfile(company); }
+function openGallery(images,startIndex){
 let currentIndex=startIndex;
 const modal=document.createElement('div');
 modal.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:#000000e6;z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column';
@@ -561,31 +581,23 @@ modal.innerHTML=`
 <button id="gallery-prev" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:#ffffff33;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:32px;cursor:pointer;z-index:1001">‹</button>
 <button id="gallery-next" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:#ffffff33;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:32px;cursor:pointer;z-index:1001">›</button>
 <img id="gallery-img" style="max-width:90%;max-height:80%;border-radius:12px;object-fit:contain" src="${images[currentIndex]}">
-<div id="gallery-counter" style="position:absolute;bottom:30px;color:#fff;background:#00000080;padding:6px 16px;border-radius:30px;font-size:14px">${currentIndex+1} / ${images.length}</div>
+<div id="gallery-counter" style="position:absolute;bottom:30px;color:#fff;background:#00000080;padding:6px 16px;border-radius:30px;font-size:14px">${currentIndex+1}/${images.length}</div>
 <div id="gallery-dots" style="position:absolute;bottom:100px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:0 16px">${images.map((_,i)=>`<div style="width:8px;height:8px;border-radius:50%;background:${i===currentIndex?'#16a34a':'#ffffff80'};cursor:pointer" data-index="${i}"></div>`).join('')}</div>
 `;
 document.body.appendChild(modal);
 const updateGallery=(idx)=>{
 currentIndex=(idx+images.length)%images.length;
 document.getElementById('gallery-img').src=images[currentIndex];
-document.getElementById('gallery-counter').innerText=`${currentIndex+1} / ${images.length}`;
+document.getElementById('gallery-counter').innerText=`${currentIndex+1}/${images.length}`;
 const dots=modal.querySelectorAll('#gallery-dots div');
-dots.forEach((dot,i)=>{
-dot.style.background=i===currentIndex?'#16a34a':'#ffffff80';
-});
+dots.forEach((dot,i)=>{ dot.style.background=i===currentIndex?'#16a34a':'#ffffff80'; });
 };
 document.getElementById('gallery-prev').onclick=()=>updateGallery(currentIndex-1);
 document.getElementById('gallery-next').onclick=()=>updateGallery(currentIndex+1);
-modal.querySelectorAll('#gallery-dots div').forEach(dot=>{
-dot.onclick=()=>updateGallery(parseInt(dot.getAttribute('data-index')));
-});
+modal.querySelectorAll('#gallery-dots div').forEach(dot=>{ dot.onclick=()=>updateGallery(parseInt(dot.getAttribute('data-index'))); });
 let touchStartX=0;
-modal.ontouchstart=(e)=>{touchStartX=e.touches[0].clientX;};
-modal.ontouchend=(e)=>{
-const endX=e.changedTouches[0].clientX;
-if(endX<touchStartX-50) updateGallery(currentIndex+1);
-if(endX>touchStartX+50) updateGallery(currentIndex-1);
-};
+modal.ontouchstart=(e)=>{ touchStartX=e.touches[0].clientX; };
+modal.ontouchend=(e)=>{ const endX=e.changedTouches[0].clientX; if(endX<touchStartX-50) updateGallery(currentIndex+1); if(endX>touchStartX+50) updateGallery(currentIndex-1); };
 }
 function showTab(tab){
 const views={listings:'view-listings',requests:'view-requests',companies:'view-companies'};
@@ -606,17 +618,10 @@ el.className=`toast ${type} show`;
 clearTimeout(toastTimer);
 toastTimer=setTimeout(()=>el.className='toast',3000);
 }
-document.querySelectorAll('.tab').forEach(tab=>{
-tab.addEventListener('click',()=>showTab(tab.getAttribute('data-tab')));
-});
+document.querySelectorAll('.tab').forEach(tab=>{ tab.addEventListener('click',()=>showTab(tab.getAttribute('data-tab'))); });
 document.getElementById('lm-dropzone')?.addEventListener('click',()=>document.getElementById('lm-imgs').click());
 fillDistricts(); updateNav();
-window.addEventListener('DOMContentLoaded', async()=>{
-const shown=await checkAndShowCompanyFromURL();
-if(!shown){
-loadAll();
-}
-});
+window.addEventListener('DOMContentLoaded', async()=>{ const shown=await checkAndShowCompanyFromURL(); if(!shown){ loadAll(); } });
 </script>
 </body>
 </html>
