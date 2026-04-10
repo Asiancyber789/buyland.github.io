@@ -427,6 +427,7 @@ async function loadAll(){
   }catch(e){console.warn(e);}
 }
 
+// ==================== রেন্ডার লিস্টিং (ডিলিট বাটন + যোগাযোগের নাম্বার + গ্যালারি) ====================
 function renderListings(data){
   const container=document.getElementById('view-listings');
   if(!data.length){container.innerHTML='<div class="empty">🏜️ কোনো জমির তালিকা নেই</div>';return;}
@@ -434,7 +435,6 @@ function renderListings(data){
     const images=l.images;
     const hasImages=images&&Array.isArray(images)&&images.length>0;
     const extraCount=hasImages?images.length-1:0;
-    
     let galleryHtml='';
     if(hasImages){
       const imagesJson=JSON.stringify(images).replace(/"/g, '&quot;');
@@ -446,13 +446,31 @@ function renderListings(data){
     }else{
       galleryHtml=`<div class="card-img">🏡<div class="card-badge badge-sale">বিক্রয়</div></div>`;
     }
-    
     const waBtn=l.whatsapp?`<a href="https://wa.me/${l.whatsapp.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="background:#25D366;width:100%">💬 WhatsApp</button></a>`:'';
     const compBadge=l.company_name?`<div style="background:#1e3a5f;padding:6px 10px;border-radius:10px;margin-top:8px;font-size:12px">🏢 ${escapeHtml(l.company_name)} <span style="background:#3b82f6;padding:2px 8px;border-radius:20px;margin-left:6px;font-size:10px">বিক্রেতা</span></div>`:`<div style="margin-top:8px;font-size:12px;color:var(--gray)">👤 ব্যক্তিগত বিক্রেতা</div>`;
     const isOwner=session&&((session.type==='buyer'&&session.phone===l.phone)||(session.type==='company'&&session.id===l.company_id));
-    
-    return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline" style="text-decoration:none;display:inline-block;text-align:center;flex:1">📞 ${l.phone}</a>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 মুছুন</button>`:''}</div></div>`;
+    return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline" style="text-decoration:none;display:inline-block;text-align:center;flex:1">📞 ${l.phone}</a>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 আমার পোস্ট মুছুন</button>`:''}</div></div>`;
   }).join('')}</div>`;
+}
+
+// ==================== রেন্ডার রিকোয়েস্ট (ডিলিট বাটন + নাম্বার প্রাইভেসি) ====================
+function renderRequests(data){
+  const container=document.getElementById('view-requests');
+  const isCompany=session&&session.type==='company';
+  if(!data.length){container.innerHTML='<div class="empty">🔍 কোনো চাহিদা নেই</div>';return;}
+  container.innerHTML=`<div class="cards">${data.map(r=>{
+    const isGuest=r.is_guest;
+    const badge=isGuest?'<span style="background:#475569;padding:2px 8px;border-radius:20px;font-size:10px">অতিথি</span>':'<span style="background:#16a34a;padding:2px 8px;border-radius:20px;font-size:10px">ক্রেতা</span>';
+    const phoneVisible=isGuest||isCompany;
+    const isOwner=session&&session.type==='buyer'&&session.id===r.buyer_id;
+    return `<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e3a1e,#166534)">🔍<div class="card-badge badge-req">চাহিদা</div></div><div class="card-body"><div class="card-title">${escapeHtml(r.district)} — ${escapeHtml(r.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(r.land_type)}</span><span>📐 ${escapeHtml(r.size||'—')}</span><span>⏱ ${timeAgo(r.created_at)}</span></div><div class="card-price">💰 বাজেট: ${r.budget} লক্ষ</div><div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span style="font-size:13px">👤 ${escapeHtml(r.buyer_name)}</span>${badge}</div>${phoneVisible?`<a href="https://wa.me/${r.buyer_phone.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="margin-top:6px;background:#25D366;width:100%">💬 WhatsApp: ${r.buyer_phone}</button></a>`:`<div class="locked">🔒 নাম্বার দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer;font-weight:500">কোম্পানি লগইন করুন</a></div>`}${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnRequest('${r.id}')">🗑 আমার পোস্ট মুছুন</button>`:''}</div></div>`;
+  }).join('')}</div>`;
+}
+
+function renderCompanies(data){
+  const container=document.getElementById('view-companies');
+  if(!data.length){container.innerHTML='<div class="empty">🏢 কোনো কোম্পানি নেই</div>';return;}
+  container.innerHTML=`<div class="cards">${data.map(comp=>`<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e2d3a,#1e3a5f)">🏢<div class="card-badge badge-company">✅ ভেরিফাইড</div></div><div class="card-body"><div class="card-title">${escapeHtml(comp.company_name)}</div><div class="card-meta">📍 ${escapeHtml(comp.district||'—')}</div>${session?`<div class="card-desc">📞 ${comp.phone}<br>📧 ${comp.email||''}<br>📜 লাইসেন্স: ${comp.trade_license||''}</div>`:`<div class="locked">🔒 তথ্য দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer">লগইন করুন</a></div>`}</div></div>`).join('')}</div>`;
 }
 
 function openGallery(images, startIndex){
@@ -468,7 +486,6 @@ function openGallery(images, startIndex){
     <div id="gallery-dots" style="position:absolute;bottom:100px;display:flex;gap:10px">${images.map((_,i)=>`<div style="width:8px;height:8px;border-radius:50%;background:${i===currentIndex?'#16a34a':'#ffffff80'};cursor:pointer" data-index="${i}"></div>`).join('')}</div>
   `;
   document.body.appendChild(modal);
-  
   const updateGallery=(idx)=>{
     currentIndex=(idx+images.length)%images.length;
     document.getElementById('gallery-img').src=images[currentIndex];
@@ -478,7 +495,6 @@ function openGallery(images, startIndex){
       dot.style.background=i===currentIndex?'#16a34a':'#ffffff80';
     });
   };
-  
   document.getElementById('gallery-prev').onclick=()=>updateGallery(currentIndex-1);
   document.getElementById('gallery-next').onclick=()=>updateGallery(currentIndex+1);
   modal.querySelectorAll('#gallery-dots div').forEach(dot=>{
@@ -491,25 +507,6 @@ function openGallery(images, startIndex){
     if(endX<touchStartX-50) updateGallery(currentIndex+1);
     if(endX>touchStartX+50) updateGallery(currentIndex-1);
   };
-}
-
-function renderRequests(data){
-  const container=document.getElementById('view-requests');
-  const isCompany=session&&session.type==='company';
-  if(!data.length){container.innerHTML='<div class="empty">🔍 কোনো চাহিদা নেই</div>';return;}
-  container.innerHTML=`<div class="cards">${data.map(r=>{
-    const isGuest=r.is_guest;
-    const badge=isGuest?'<span style="background:#475569;padding:2px 8px;border-radius:20px;font-size:10px">অতিথি</span>':'<span style="background:#16a34a;padding:2px 8px;border-radius:20px;font-size:10px">ক্রেতা</span>';
-    const phoneVisible=isGuest||isCompany;
-    const isOwner=session&&session.type==='buyer'&&session.id===r.buyer_id;
-    return `<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e3a1e,#166534)">🔍<div class="card-badge badge-req">চাহিদা</div></div><div class="card-body"><div class="card-title">${escapeHtml(r.district)} — ${escapeHtml(r.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(r.land_type)}</span><span>📐 ${escapeHtml(r.size||'—')}</span><span>⏱ ${timeAgo(r.created_at)}</span></div><div class="card-price">💰 বাজেট: ${r.budget} লক্ষ</div><div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span style="font-size:13px">👤 ${escapeHtml(r.buyer_name)}</span>${badge}</div>${phoneVisible?`<a href="https://wa.me/${r.buyer_phone.replace(/[^0-9]/g,'')}" target="_blank"><button class="btn btn-green" style="margin-top:6px;background:#25D366;width:100%">💬 WhatsApp: ${r.buyer_phone}</button></a>`:`<div class="locked">🔒 নাম্বার দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer;font-weight:500">কোম্পানি লগইন করুন</a></div>`}${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnRequest('${r.id}')">🗑 মুছুন</button>`:''}</div></div>`;
-  }).join('')}</div>`;
-}
-
-function renderCompanies(data){
-  const container=document.getElementById('view-companies');
-  if(!data.length){container.innerHTML='<div class="empty">🏢 কোনো কোম্পানি নেই</div>';return;}
-  container.innerHTML=`<div class="cards">${data.map(comp=>`<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#1e2d3a,#1e3a5f)">🏢<div class="card-badge badge-company">✅ ভেরিফাইড</div></div><div class="card-body"><div class="card-title">${escapeHtml(comp.company_name)}</div><div class="card-meta">📍 ${escapeHtml(comp.district||'—')}</div>${session?`<div class="card-desc">📞 ${comp.phone}<br>📧 ${comp.email||''}<br>📜 লাইসেন্স: ${comp.trade_license||''}</div>`:`<div class="locked">🔒 তথ্য দেখতে <a onclick="openModal('login-modal')" style="color:var(--green);cursor:pointer">লগইন করুন</a></div>`}</div></div>`).join('')}</div>`;
 }
 
 function showTab(tab){
