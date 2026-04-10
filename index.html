@@ -422,7 +422,7 @@ async function loadAll(){
   }catch(e){console.warn(e);}
 }
 
-// ==================== renderListings (গ্যালারি + সরাসরি কল) ====================
+// ==================== renderListings (নাম্বার দেখা যাবে) ====================
 function renderListings(data){
   const container=document.getElementById('view-listings');
   if(!data.length){container.innerHTML='<div class="empty">🏜️ কোনো জমির তালিকা নেই</div>';return;}
@@ -447,7 +447,7 @@ function renderListings(data){
     const compBadge=l.company_name?`<div style="background:#1e3a5f;padding:6px 10px;border-radius:10px;margin-top:8px;font-size:12px">🏢 ${escapeHtml(l.company_name)} <span style="background:#3b82f6;padding:2px 8px;border-radius:20px;margin-left:6px;font-size:10px">বিক্রেতা</span></div>`:`<div style="margin-top:8px;font-size:12px;color:var(--gray)">👤 ব্যক্তিগত বিক্রেতা</div>`;
     const isOwner=session&&((session.type==='buyer'&&session.phone===l.phone)||(session.type==='company'&&session.id===l.company_id));
     
-    // 🔧 সরাসরি কল করার লিংক (tel:)
+    // 📞 নাম্বার দেখা যাবে
     return `<div class="card">${galleryHtml}<div class="card-body"><div class="card-title">${escapeHtml(l.district)} — ${escapeHtml(l.area)}</div><div class="card-meta"><span>🏷 ${escapeHtml(l.land_type)}</span><span>📐 ${escapeHtml(l.size)}</span><span>⏱ ${timeAgo(l.created_at)}</span></div><div class="card-price">💰 ${l.price} লক্ষ</div><div class="card-desc">${escapeHtml(l.description||'')}</div>${compBadge}<div class="card-footer"><a href="tel:${l.phone}" class="btn btn-outline" style="text-decoration:none;display:inline-block;text-align:center;flex:1">📞 ${l.phone}</a>${waBtn}</div>${isOwner?`<button class="btn btn-red" style="width:100%;margin-top:10px" onclick="deleteOwnListing('${l.id}')">🗑 মুছুন</button>`:''}</div></div>`;
   }).join('')}</div>`;
 }
